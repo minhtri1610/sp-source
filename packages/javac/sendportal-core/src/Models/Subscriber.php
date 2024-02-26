@@ -54,7 +54,23 @@ class Subscriber extends BaseModel
         'last_name',
         'meta',
         'unsubscribed_at',
-        'unsubscribe_event_id'
+        'unsubscribe_event_id',
+        'cs_source_id',
+        'cs_company_name',
+        'cs_phone_number',
+        'cs_short_email',
+        'cs_short_sms',
+        'cs_corporate_user',
+        'cs_corporate_code',
+        'cs_source_web',
+        'cs_user_name',
+        'cs_course_name',
+        'cs_quiz_taken',
+        'cs_quiz_passed',
+        'cs_quiz_paid',
+        'cs_quiz_expiring',
+        'cs_quiz_date',
+        'cs_quiz_failed_attempts'
     ];
 
     /** @var string[] */

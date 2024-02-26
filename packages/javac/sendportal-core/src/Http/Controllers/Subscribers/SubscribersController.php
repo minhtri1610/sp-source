@@ -71,6 +71,7 @@ class SubscribersController extends Controller
         $data = $request->all();
         $data['unsubscribed_at'] = $request->has('subscribed') ? null : now();
         $data['unsubscribe_event_id'] = $request->has('subscribed') ? null : UnsubscribeEventType::MANUAL_BY_ADMIN;
+        $data['cs_quiz_date'] = $request->has('cs_quiz_date') ? date('Y-m-d', strtotime($request->cs_quiz_date)): null;
 
         $subscriber = $this->subscriberRepo->store(Sendportal::currentWorkspaceId(), $data);
 
