@@ -71,7 +71,9 @@ class SubscribersController extends Controller
         $data = $request->all();
         $data['unsubscribed_at'] = $request->has('subscribed') ? null : now();
         $data['unsubscribe_event_id'] = $request->has('subscribed') ? null : UnsubscribeEventType::MANUAL_BY_ADMIN;
-        $data['cs_quiz_date'] = $request->has('cs_quiz_date') ? date('Y-m-d', strtotime($request->cs_quiz_date)): null;
+        if($request->has('cs_quiz_date')  && !empty($request->cs_quiz_date)){
+            $data['cs_quiz_date'] = date('Y-m-d', strtotime($request->cs_quiz_date));
+        }
 
         $subscriber = $this->subscriberRepo->store(Sendportal::currentWorkspaceId(), $data);
 
@@ -126,6 +128,10 @@ class SubscribersController extends Controller
 
         if (!$request->has('tags')) {
             $data['tags'] = [];
+        }
+
+        if($request->has('cs_quiz_date') && !empty($request->cs_quiz_date)){
+            $data['cs_quiz_date'] = date('Y-m-d', strtotime($request->cs_quiz_date));
         }
 
         $this->subscriberRepo->update(Sendportal::currentWorkspaceId(), $id, $data);
