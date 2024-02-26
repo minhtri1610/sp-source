@@ -75,6 +75,12 @@
                 <tr>
                     <th>{{ __('Email') }}</th>
                     <th>{{ __('Name') }}</th>
+                    {{-- fields new --}}
+                    <th>{{ __('Company Name') }}</th>
+                    <th>{{ __('Phone Number') }}</th>
+                    <th>{{ __('Type') }}</th>{{-- individual / corporate --}}
+                    <th>{{ __('Magic Link') }}</th>
+                    {{-- end fields new --}}
                     <th>{{ __('Tags') }}</th>
                     <th>{{ __('Created') }}</th>
                     <th>{{ __('Status') }}</th>
@@ -90,6 +96,13 @@
                             </a>
                         </td>
                         <td>{{ $subscriber->full_name }}</td>
+                        <td>{{ $subscriber->cs_company_name }}</td>
+                        <td>{{ $subscriber->cs_phone_number }}</td>
+                        <td>{{ $subscriber->cs_corporate_user ? 'Corporate' : 'Individual'}}</td>
+                        <td>
+                            {{ $subscriber->cs_short_email ? 's-mail: '.$subscriber->cs_short_email.'-' : '' }} <br>
+                            {{ $subscriber->cs_short_sms ? 's-sms:'.$subscriber->cs_short_sms : ''}}
+                        </td>
                         <td>
                             @forelse($subscriber->tags as $tag)
                                 <span class="badge badge-light">{{ $tag->name }}</span>
