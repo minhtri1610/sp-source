@@ -1,7 +1,9 @@
 <x-sendportal.text-field name="email" :label="__('Email')" type="email" :value="$subscriber->email ?? null" />
 <x-sendportal.text-field name="first_name" :label="__('First Name')" :value="$subscriber->first_name ?? null" />
 <x-sendportal.text-field name="last_name" :label="__('Last Name')" :value="$subscriber->last_name ?? null" />
+
 <x-sendportal.select-field name="tags[]" :label="__('Tags')" :options="$tags" :value="$selectedTags" multiple />
+<x-sendportal.select-field name="cs_customer_type" :label="__('Customer Type')" :options="$cs_customer_types" :value="$subscriber->cs_customer_type ?? old('cs_customer_type')" />
 {{-- <x-sendportal.select-field name="tags[]" :label="__('Tags')" :options="$tags" :value="$selectedTags" /> --}}
  
 {{-- fields new --}}

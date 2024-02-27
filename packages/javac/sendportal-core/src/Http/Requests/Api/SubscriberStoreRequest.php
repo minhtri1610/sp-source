@@ -15,6 +15,7 @@ class SubscriberStoreRequest extends FormRequest
             'last_name' => ['nullable'],
             'email' => ['required', 'email'],
             'tags' => ['array', 'nullable'],
+            'cs_customer_type' => ['integer'],
             'unsubscribed_at' => ['nullable', 'date'],
             'cs_source_id' => ['nullable'],
             'cs_company_name' => ['nullable'],
@@ -40,6 +41,8 @@ class SubscriberStoreRequest extends FormRequest
     {
         $data = $this->all();
         // Set default values for fields if they are null
+        $individualKey = array_search(config('constants.customer_type')['1'], config('constants.customer_type'));
+        $data['cs_customer_type'] = $data['cs_customer_type'] ?? $individualKey;
         $data['cs_corporate_user'] = $data['cs_corporate_user'] ?? false;
         $data['cs_quiz_taken'] = $data['cs_quiz_taken'] ?? false;
         $data['cs_quiz_passed'] = $data['cs_quiz_passed'] ?? false;

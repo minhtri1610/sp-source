@@ -59,8 +59,9 @@ class SubscribersController extends Controller
     {
         $tags = $this->tagRepo->pluck(Sendportal::currentWorkspaceId());
         $selectedTags = [];
+        $cs_customer_types = config('constants.customer_type');
 
-        return view('sendportal::subscribers.create', compact('tags', 'selectedTags'));
+        return view('sendportal::subscribers.create', compact('tags', 'selectedTags', 'cs_customer_types'));
     }
 
     /**
@@ -104,8 +105,9 @@ class SubscribersController extends Controller
         $subscriber = $this->subscriberRepo->find(Sendportal::currentWorkspaceId(), $id);
         $tags = $this->tagRepo->pluck(Sendportal::currentWorkspaceId());
         $selectedTags = $subscriber->tags->pluck('name', 'id');
+        $cs_customer_types = config('constants.customer_type');
 
-        return view('sendportal::subscribers.edit', compact('subscriber', 'tags', 'selectedTags'));
+        return view('sendportal::subscribers.edit', compact('subscriber', 'tags', 'selectedTags', 'cs_customer_types'));
     }
 
     /**
