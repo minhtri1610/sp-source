@@ -86,4 +86,9 @@ class SubscribersController extends Controller
 
         return response(null, 204);
     }
+
+    
+    public function syncData(){
+        dd('vao-api');
+    }
 }
