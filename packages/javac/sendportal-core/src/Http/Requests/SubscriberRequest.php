@@ -35,6 +35,18 @@ class SubscriberRequest extends FormRequest
                 'nullable',
                 'array',
             ],
+            'cs_customer_type' => ['integer'],
+            'unsubscribed_at' => ['nullable', 'date'],
+            'cs_source_id' => ['nullable'],
+            'cs_company_name' => ['nullable'],
+            'cs_phone_number' => ['nullable'],
+            'cs_short_email' => ['nullable'],
+            'cs_short_sms'  => ['nullable'],
+            'cs_corporate_user' => ['nullable' ,'boolean'],
+            'cs_corporate_code' => ['nullable'],
+            'cs_source_web' => ['nullable'],
+            'cs_user_name' => ['nullable'],
         ];
     }
+           
 }

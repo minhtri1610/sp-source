@@ -20,6 +20,7 @@ class Subscriber extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
+            'cs_customer_type' => $this->cs_customer_type,
             'cs_source_id' => $this->cs_source_id,
             'cs_company_name' => $this->cs_company_name,
             'cs_phone_number' => $this->cs_phone_number,

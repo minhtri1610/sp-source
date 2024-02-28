@@ -117,7 +117,6 @@ class SubscribersController extends Controller
     {
         $subscriber = $this->subscriberRepo->find(Sendportal::currentWorkspaceId(), $id);
         $data = $request->validated();
-
         // updating subscriber from subscribed -> unsubscribed
         if (!$request->has('subscribed') && !$subscriber->unsubscribed_at) {
             $data['unsubscribed_at'] = now();

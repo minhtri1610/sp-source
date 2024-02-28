@@ -29,4 +29,5 @@ php artisan sp:install
 ### migrate
 
 php artisan make:migration drop_columns_from_sendportal_subscribers_table --table=sendportal_subscribers
+php artisan make:migration add_columns_from_sendportal_tags_table --table=sendportal_tags
 php artisan make:migration create_course_of_subscribers_table

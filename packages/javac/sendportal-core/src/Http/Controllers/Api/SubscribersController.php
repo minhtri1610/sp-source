@@ -88,7 +88,44 @@ class SubscribersController extends Controller
     }
 
     
-    public function syncData(){
-        dd('vao-api');
+    public function syncData(SubscriberStoreRequest $request){
+        try {
+            $res = [
+                'msg' => '',
+                'data' => []
+            ];
+            if(isset($request->data)){
+                $data_syncs = json_decode($request->data);
+                $workspaceId = Sendportal::currentWorkspaceId();
+                foreach ($data_syncs as $key => $item) {
+                    //check tags
+                    $this->insertTags($workspaceId,$item['cs_course_name']);
+                    //insert or ignore subscriber
+                    $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                    // save info course for subscriber
+                }
+            }
+            return $res;
+
+        } catch (\Exception $ex) {
+            $errors = $ex->getMessage();
+            return ['errors' => $errors];
+        }
+    }
+
+    private function insertOrIgnoreSubscribers($workspaceId, $data){
+        $existingSubscriber = $this->subscribers->findBy($workspaceId, 'email', $data['email']);
+
+        if (!$existingSubscriber) {
+            $subscriber = $this->subscribers->store($workspaceId, $data->toArray());
+            return $subscriber;
+        }
+        return false;
+    }
+
+    private function insertTags($workspaceId, $key){
+        if(!empty($key)){
+            $this->subscribers->insertOrIgnoreTags($workspaceId, $key);
+        }
     }
 }

@@ -40,6 +40,7 @@ class Tag extends BaseModel
     /** @var array */
     protected $fillable = [
         'name',
+        'code'
     ];
 
     /** @var array */

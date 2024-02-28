@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Sendportal\Base\Models\Subscriber;
+use Sendportal\Base\Models\Tag;
 use Sendportal\Base\Repositories\BaseTenantRepository;
 
 abstract class BaseSubscriberTenantRepository extends BaseTenantRepository implements SubscriberTenantRepositoryInterface
@@ -143,5 +144,9 @@ abstract class BaseSubscriberTenantRepository extends BaseTenantRepository imple
                 ->whereIn('sendportal_tag_subscriber.tag_id', $tagIds)
                 ->distinct();
         }
+    }
+
+    public function insertOrIgnoreTags($workspaceId, $key_name){
+        return Tag::updateOrCreate(['workspace_id' => $workspaceId, 'name' => $key_name], ['name' => $key_name]);
     }
 }

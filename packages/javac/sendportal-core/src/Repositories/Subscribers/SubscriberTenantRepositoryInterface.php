@@ -18,4 +18,6 @@ interface SubscriberTenantRepositoryInterface extends BaseTenantInterface
     public function getRecentSubscribers(int $workspaceId): Collection;
 
     public function getGrowthChartData(CarbonPeriod $period, int $workspaceId): array;
+
+    public function insertOrIgnoreTags(int $workspaceId, string $key_name);
 }
