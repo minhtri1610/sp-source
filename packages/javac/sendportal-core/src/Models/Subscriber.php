@@ -64,13 +64,13 @@ class Subscriber extends BaseModel
         'cs_corporate_code',
         'cs_source_web',
         'cs_user_name',
-        'cs_course_name',
-        'cs_quiz_taken',
-        'cs_quiz_passed',
-        'cs_quiz_paid',
-        'cs_quiz_expiring',
-        'cs_quiz_date',
-        'cs_quiz_failed_attempts'
+        // 'cs_course_name',
+        // 'cs_quiz_taken',
+        // 'cs_quiz_passed',
+        // 'cs_quiz_paid',
+        // 'cs_quiz_expiring',
+        // 'cs_quiz_date',
+        // 'cs_quiz_failed_attempts'
     ];
 
     /** @var string[] */

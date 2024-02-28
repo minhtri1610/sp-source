@@ -26,13 +26,13 @@ class SubscriberStoreRequest extends FormRequest
             'cs_corporate_code' => ['nullable'],
             'cs_source_web' => ['nullable'],
             'cs_user_name' => ['nullable'],
-            'cs_course_name' => ['nullable'],
-            'cs_quiz_taken' => ['nullable','boolean'],
-            'cs_quiz_passed' => ['nullable','boolean'],
-            'cs_quiz_paid' => ['nullable','boolean'],
-            'cs_quiz_expiring' => ['nullable', 'integer'],
-            'cs_quiz_date' => ['nullable', 'date'],
-            'cs_quiz_failed_attempts' => ['integer']
+            // 'cs_course_name' => ['nullable'],
+            // 'cs_quiz_taken' => ['nullable','boolean'],
+            // 'cs_quiz_passed' => ['nullable','boolean'],
+            // 'cs_quiz_paid' => ['nullable','boolean'],
+            // 'cs_quiz_expiring' => ['nullable', 'integer'],
+            // 'cs_quiz_date' => ['nullable', 'date'],
+            // 'cs_quiz_failed_attempts' => ['integer']
         ];
         
     }

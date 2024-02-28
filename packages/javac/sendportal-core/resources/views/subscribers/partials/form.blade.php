@@ -15,13 +15,13 @@
 <x-sendportal.text-field name="cs_corporate_code" :label="__('Corporate Code')" :value="$subscriber->cs_corporate_code ?? null" />
 <x-sendportal.text-field name="cs_source_web" :label="__('Source Web')" :value="$subscriber->cs_source_web ?? null" />   
 <x-sendportal.text-field name="cs_user_name" :label="__('Username')" :value="$subscriber->cs_user_name ?? null" />  
-<x-sendportal.text-field name="cs_course_name" :label="__('Coursename')" :value="$subscriber->cs_course_name ?? null" />  
+{{-- <x-sendportal.text-field name="cs_course_name" :label="__('Coursename')" :value="$subscriber->cs_course_name ?? null" />  
 <x-sendportal.checkbox-field name="cs_quiz_taken" :label="__('Quiz Taken')" :checked="!empty($subscriber->cs_quiz_taken)" />
 <x-sendportal.checkbox-field name="cs_quiz_passed" :label="__('Quiz Passed')" :checked="!empty($subscriber->cs_quiz_passed)" />
 <x-sendportal.checkbox-field name="cs_quiz_paid" :label="__('Quiz Paid')" :checked="!empty($subscriber->cs_quiz_paid)" />
 <x-sendportal.text-field name="cs_quiz_expiring" type="number" :label="__('Quiz Expiring in Days')" :value="$subscriber->cs_quiz_expiring ?? null" />
 <x-sendportal.text-field name="cs_quiz_date" type="date" :label="__('Quiz Date')" :value="$subscriber->cs_quiz_date ?? null" />
-<x-sendportal.text-field name="cs_quiz_failed_attempts" type="number" :label="__('Quiz Failed Attempts')" :value="$subscriber->cs_quiz_failed_attempts ?? null" />
+<x-sendportal.text-field name="cs_quiz_failed_attempts" type="number" :label="__('Quiz Failed Attempts')" :value="$subscriber->cs_quiz_failed_attempts ?? null" /> --}}
 {{-- news fields new --}}
 {{-- multiple --}}
 <x-sendportal.checkbox-field name="subscribed" :label="__('Subscribed')" :checked="empty($subscriber->unsubscribed_at)" />
