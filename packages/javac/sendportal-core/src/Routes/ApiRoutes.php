@@ -17,6 +17,8 @@ class ApiRoutes
                 $apiRouter->apiResource('subscribers', 'SubscribersController');
                 $apiRouter->apiResource('tags', 'TagsController');
 
+                $apiRouter->post('sync-subscribers', 'SubscribersController@syncData')->name('subscribers.sync');
+
                 $apiRouter->apiResource('subscribers.tags', 'SubscriberTagsController')
                     ->except(['show', 'update', 'destroy']);
                 $apiRouter->put('subscribers/{subscriber}/tags', 'SubscriberTagsController@update')

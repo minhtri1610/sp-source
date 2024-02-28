@@ -25,3 +25,8 @@ php artisan vendor:publish --provider=Sendportal\\Base\\SendportalBaseServicePro
 ### set up account admin
 php artisan sp:install
 
+
+### migrate
+
+php artisan make:migration drop_columns_from_sendportal_subscribers_table --table=sendportal_subscribers
+php artisan make:migration create_course_of_subscribers_table
