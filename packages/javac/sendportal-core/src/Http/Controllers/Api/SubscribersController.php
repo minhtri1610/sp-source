@@ -102,12 +102,14 @@ class SubscribersController extends Controller
                     $tag = $this->insertTags($workspaceId, $item['cs_course_name']);
                     //insert or ignore subscriber
                     $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
-                    //save subscriber with tag
-                    $data_tag_w_subscriber = [
-                        'tag_id' => $tag->id,
-                        'subscriber_id' => $subscriber->id
-                    ];
-                    $this->syncSubscriberTagsApi($data_tag_w_subscriber);
+                    
+                    //// save subscriber with tag
+                    // $data_tag_w_subscriber = [
+                    //     'tag_id' => $tag->id,
+                    //     'subscriber_id' => $subscriber->id
+                    // ];
+                    // $this->syncSubscriberTagsApi($data_tag_w_subscriber);
+
                     // save info course for subscriber
                     $data_couser = [];
                     $this->syncCouserInfo($workspaceId, $data_couser);
