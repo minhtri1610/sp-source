@@ -88,50 +88,86 @@ class SubscribersController extends Controller
     }
 
     
-    public function syncData(SubscriberStoreRequest $request){
+    public function syncData(){
         try {
             $res = [
                 'msg' => '',
-                'data' => []
+                'data' => [
+                    'sync_success' => [],
+                    'sync_failed' => []
+                ]
             ];
-            if(isset($request->data)){
-                $data_syncs = json_decode($request->data);
-                $workspaceId = Sendportal::currentWorkspaceId();
+            if(isset(request()->data)){
+                $data_syncs = json_decode(request()->data);
+                $workspaceId = request()->workspace_id;
+                $sync_success = [];
+                $sync_failed = [];
                 foreach ($data_syncs as $key => $item) {
-                    //check tags
-                    $tag = $this->insertTags($workspaceId, $item['cs_course_name']);
-                    //insert or ignore subscriber
-                    $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
-                    
-                    //// save subscriber with tag
-                    // $data_tag_w_subscriber = [
-                    //     'tag_id' => $tag->id,
-                    //     'subscriber_id' => $subscriber->id
-                    // ];
-                    // $this->syncSubscriberTagsApi($data_tag_w_subscriber);
+                    try {
+                        //check tags
+                        // $tag = $this->insertTags($workspaceId, $item['cs_course_name']);
+                        
+                        //insert or ignore subscriber
+                        $item = (array)$item;
 
-                    // save info course for subscriber
-                    $data_couser = [];
-                    $this->syncCouserInfo($workspaceId, $data_couser);
+                        $item['cs_corporate_user'] = $item['cs_corporate_user'] ?? false;
+                        $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                        
+                        //// save subscriber with tag
+                        // $data_tag_w_subscriber = [
+                        //     'tag_id' => $tag->id,
+                        //     'subscriber_id' => $subscriber->id
+                        // ];
+                        // $this->syncSubscriberTagsApi($data_tag_w_subscriber);
+
+                        // save info course for subscriber
+                        $data_couser = [
+                            'subscriber_id' => $subscriber->id,
+                            'cs_course_name' => $item['cs_course_name'] ?? 'noname',
+                            'cs_quiz_taken' => $item['cs_quiz_taken'] ?? false,
+                            'cs_quiz_passed' => $item['cs_quiz_passed'] ?? false,
+                            'cs_quiz_paid' => $item['cs_quiz_paid'] ?? false,
+                            'cs_quiz_expiring' => $item['cs_quiz_expiring'],
+                            'cs_quiz_date' => $item['cs_quiz_date'],
+                            'cs_quiz_failed_attempts' => $item['cs_quiz_failed_attempts']
+                        ];
+                        $this->syncCouserInfo($data_couser);
+
+                        $sync_success[] = $item['cs_source_id'];
+
+                    } catch (\Exception $ex) {
+                        dd($ex->getMessage());
+                        $sync_failed[] = $item['cs_source_id'];
+                        continue;
+                    }
 
                 }
+                $res['msg'] = 'Completed Sync Data';
+                $res['data']['sync_success'] = $sync_success;
+                $res['data']['sync_failed'] = $sync_failed;
             }
             return $res;
 
         } catch (\Exception $ex) {
             $errors = $ex->getMessage();
-            return ['errors' => $errors];
+            $res['msg'] = $errors;
+            return $res;
         }
     }
 
     private function insertOrIgnoreSubscribers($workspaceId, $data){
+        
         $existingSubscriber = $this->subscribers->findBy($workspaceId, 'email', $data['email']);
 
         if (!$existingSubscriber) {
-            $subscriber = $this->subscribers->store($workspaceId, $data->toArray());
+            $subscriber = $this->subscribers->store($workspaceId, $data);
             return $subscriber;
         }
         return $existingSubscriber;
+    }
+
+    private function syncCouserInfo($data){
+        return $this->subscribers->syncCourse($data);
     }
 
     private function insertTags($workspaceId, $key){

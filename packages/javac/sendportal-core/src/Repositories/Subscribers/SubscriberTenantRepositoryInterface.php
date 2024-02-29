@@ -22,4 +22,7 @@ interface SubscriberTenantRepositoryInterface extends BaseTenantInterface
     public function insertOrIgnoreTags(int $workspaceId, string $key_name);
 
     public function syncTagsApi(Subscriber $subscriber, array $data);
+
+    public function syncCourse(array $data);
+    
 }

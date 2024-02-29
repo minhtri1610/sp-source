@@ -14,10 +14,11 @@ class ApiRoutes
             $this->name('sendportal.api.')->prefix('v1')->namespace('\Sendportal\Base\Http\Controllers\Api')->group(static function (Router $apiRouter) {
                 $apiRouter->apiResource('campaigns', 'CampaignsController');
                 $apiRouter->post('campaigns/{id}/send', 'CampaignDispatchController@send')->name('campaigns.send');
-                $apiRouter->apiResource('subscribers', 'SubscribersController');
-                $apiRouter->apiResource('tags', 'TagsController');
 
                 $apiRouter->post('sync-subscribers', 'SubscribersController@syncData')->name('subscribers.sync');
+                $apiRouter->apiResource('subscribers', 'SubscribersController');
+                
+                $apiRouter->apiResource('tags', 'TagsController');
 
                 $apiRouter->apiResource('subscribers.tags', 'SubscriberTagsController')
                     ->except(['show', 'update', 'destroy']);

@@ -16,7 +16,7 @@ class CreateCourseOfSubscribersTable extends Migration
         Schema::create('course_of_subscribers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('subscriber_id');
-            $table->text('cs_course_name');
+            $table->text('cs_course_name')->nullable();
             $table->boolean('cs_quiz_taken')->default(false);
             $table->boolean('cs_quiz_passed')->default(false);
             $table->boolean('cs_quiz_paid')->default(false);

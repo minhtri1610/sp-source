@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Sendportal\Base\Models\Subscriber;
 use Sendportal\Base\Models\Tag;
+use Sendportal\Base\Models\SubscriberCourse;
 use Sendportal\Base\Repositories\BaseTenantRepository;
 
 abstract class BaseSubscriberTenantRepository extends BaseTenantRepository implements SubscriberTenantRepositoryInterface
@@ -148,5 +149,14 @@ abstract class BaseSubscriberTenantRepository extends BaseTenantRepository imple
 
     public function insertOrIgnoreTags($workspaceId, $key_name){
         return Tag::updateOrCreate(['workspace_id' => $workspaceId, 'name' => $key_name], ['name' => $key_name]);
+    }
+
+    public function syncTagsApi($subscriber, $data){
+        //waiting logic
+        return [];
+    }
+
+    public function syncCourse($data){
+        return SubscriberCourse::create($data);
     }
 }
