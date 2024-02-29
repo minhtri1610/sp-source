@@ -99,10 +99,19 @@ class SubscribersController extends Controller
                 $workspaceId = Sendportal::currentWorkspaceId();
                 foreach ($data_syncs as $key => $item) {
                     //check tags
-                    $this->insertTags($workspaceId,$item['cs_course_name']);
+                    $tag = $this->insertTags($workspaceId, $item['cs_course_name']);
                     //insert or ignore subscriber
-                    $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                    $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                    //save subscriber with tag
+                    $data_tag_w_subscriber = [
+                        'tag_id' => $tag->id,
+                        'subscriber_id' => $subscriber->id
+                    ];
+                    $this->syncSubscriberTagsApi($data_tag_w_subscriber);
                     // save info course for subscriber
+                    $data_couser = [];
+                    $this->syncCouserInfo($workspaceId, $data_couser);
+
                 }
             }
             return $res;
@@ -120,12 +129,12 @@ class SubscribersController extends Controller
             $subscriber = $this->subscribers->store($workspaceId, $data->toArray());
             return $subscriber;
         }
-        return false;
+        return $existingSubscriber;
     }
 
     private function insertTags($workspaceId, $key){
         if(!empty($key)){
-            $this->subscribers->insertOrIgnoreTags($workspaceId, $key);
+            return $this->subscribers->insertOrIgnoreTags($workspaceId, $key);
         }
     }
 }
