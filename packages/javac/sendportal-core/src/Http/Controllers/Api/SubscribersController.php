@@ -97,12 +97,13 @@ class SubscribersController extends Controller
                     'sync_failed' => []
                 ]
             ];
-            if(isset(request()->data)){
+            if(isset(request()->data) && !empty(request()->data)){
                 $data_syncs = json_decode(request()->data);
                 $workspaceId = request()->workspace_id;
                 $sync_success = [];
                 $sync_failed = [];
                 foreach ($data_syncs as $key => $item) {
+                    
                     try {
                         //check tags
                         // $tag = $this->insertTags($workspaceId, $item['cs_course_name']);
@@ -112,7 +113,6 @@ class SubscribersController extends Controller
 
                         $item['cs_corporate_user'] = $item['cs_corporate_user'] ?? false;
                         $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
-                        
                         //// save subscriber with tag
                         // $data_tag_w_subscriber = [
                         //     'tag_id' => $tag->id,
@@ -123,7 +123,7 @@ class SubscribersController extends Controller
                         // save info course for subscriber
                         $data_couser = [
                             'subscriber_id' => $subscriber->id,
-                            'cs_course_name' => $item['cs_course_name'] ?? 'noname',
+                            'cs_course_name' => $item['cs_course_name'] ?? 'no-name',
                             'cs_quiz_taken' => $item['cs_quiz_taken'] ?? false,
                             'cs_quiz_passed' => $item['cs_quiz_passed'] ?? false,
                             'cs_quiz_paid' => $item['cs_quiz_paid'] ?? false,
