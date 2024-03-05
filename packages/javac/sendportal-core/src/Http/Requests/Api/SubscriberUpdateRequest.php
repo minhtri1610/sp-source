@@ -31,7 +31,8 @@ class SubscriberUpdateRequest extends FormRequest
             'cs_quiz_paid' => ['nullable','boolean'],
             'cs_quiz_expiring' => ['nullable', 'integer'],
             'cs_quiz_date' => ['nullable', 'date'],
-            'cs_quiz_failed_attempts' => ['integer']
+            'cs_quiz_failed_attempts' => ['integer'],
+            'user_created_at' => ['nullable', 'date']// data create_at from ahac
         ];
     }
 
@@ -43,7 +44,7 @@ class SubscriberUpdateRequest extends FormRequest
         $data['cs_quiz_taken'] = $data['cs_quiz_taken'] ?? false;
         $data['cs_quiz_passed'] = $data['cs_quiz_passed'] ?? false;
         $data['cs_quiz_paid'] = $data['cs_quiz_paid'] ?? false;
-
+        $data['sync_date'] = $data['sync_date'] ?? date("Y-m-d H:i:s");
         return $data;
     }
 }

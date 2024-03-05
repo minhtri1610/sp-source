@@ -55,7 +55,7 @@ class Subscriber extends BaseModel
         'meta',
         'unsubscribed_at',
         'unsubscribe_event_id',
-        'cs_source_id',
+        'cs_source_id',//code string from ahac, ahcc
         'cs_company_name',
         'cs_phone_number',
         'cs_short_email',
@@ -64,7 +64,9 @@ class Subscriber extends BaseModel
         'cs_corporate_code',
         'cs_source_web',
         'cs_user_name',
-        'cs_customer_type'
+        'cs_customer_type',
+        'sync_date',
+        'created_at'
         // 'cs_course_name',
         // 'cs_quiz_taken',
         // 'cs_quiz_passed',

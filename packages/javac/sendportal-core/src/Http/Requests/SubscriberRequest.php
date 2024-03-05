@@ -46,6 +46,7 @@ class SubscriberRequest extends FormRequest
             'cs_corporate_code' => ['nullable'],
             'cs_source_web' => ['nullable'],
             'cs_user_name' => ['nullable'],
+            'user_created_at' => ['nullable', 'date']
         ];
     }
            

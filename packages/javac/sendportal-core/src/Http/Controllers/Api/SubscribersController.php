@@ -112,6 +112,10 @@ class SubscribersController extends Controller
                         $item = (array)$item;
 
                         $item['cs_corporate_user'] = $item['cs_corporate_user'] ?? false;
+                        if(!empty($item['user_created_at'])){
+                            $item['created_at'] = date('Y-m-d H:i:s', strtotime($item['user_created_at']));
+                        }
+                        $item['sync_date'] = date('Y-m-d H:i:s');
                         $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
                         //// save subscriber with tag
                         // $data_tag_w_subscriber = [
@@ -136,7 +140,7 @@ class SubscribersController extends Controller
                         $sync_success[] = $item['cs_source_id'];
 
                     } catch (\Exception $ex) {
-                        dd($ex->getMessage());
+                        // dd($ex->getMessage());
                         $sync_failed[] = $item['cs_source_id'];
                         continue;
                     }
