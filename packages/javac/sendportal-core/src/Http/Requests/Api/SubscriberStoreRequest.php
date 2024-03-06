@@ -26,7 +26,8 @@ class SubscriberStoreRequest extends FormRequest
             'cs_corporate_code' => ['nullable'],
             'cs_source_web' => ['nullable'],
             'cs_user_name' => ['nullable'],
-            'user_created_at' => ['nullable', 'date']// data create_at from ahac
+            'user_created_at' => ['nullable', 'date'],// data create_at from ahac
+            'cheap_email_sent' => ['nullable' ,'boolean']
             // 'cs_course_name' => ['nullable'],
             // 'cs_quiz_taken' => ['nullable','boolean'],
             // 'cs_quiz_passed' => ['nullable','boolean'],
@@ -49,7 +50,7 @@ class SubscriberStoreRequest extends FormRequest
         $data['cs_quiz_passed'] = $data['cs_quiz_passed'] ?? false;
         $data['cs_quiz_paid'] = $data['cs_quiz_paid'] ?? false;
         $data['user_created_at'] = $data['user_created_at'] ?? date("Y-m-d H:i:s");
-
+        $data['cheap_email_sent'] = $data['cheap_email_sent'] ?? false;
         return $data;
     }
 }

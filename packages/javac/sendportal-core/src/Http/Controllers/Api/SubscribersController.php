@@ -125,17 +125,19 @@ class SubscribersController extends Controller
                         // $this->syncSubscriberTagsApi($data_tag_w_subscriber);
 
                         // save info course for subscriber
-                        $data_couser = [
-                            'subscriber_id' => $subscriber->id,
-                            'cs_course_name' => $item['cs_course_name'] ?? 'no-name',
-                            'cs_quiz_taken' => $item['cs_quiz_taken'] ?? false,
-                            'cs_quiz_passed' => $item['cs_quiz_passed'] ?? false,
-                            'cs_quiz_paid' => $item['cs_quiz_paid'] ?? false,
-                            'cs_quiz_expiring' => $item['cs_quiz_expiring'],
-                            'cs_quiz_date' => $item['cs_quiz_date'],
-                            'cs_quiz_failed_attempts' => $item['cs_quiz_failed_attempts']
-                        ];
-                        $this->syncCouserInfo($data_couser);
+                        if(!$item['cheap_email_sent']){//check sent on cheapmail
+                            $data_couser = [
+                                'subscriber_id' => $subscriber->id,
+                                'cs_course_name' => $item['cs_course_name'] ?? 'no-name',
+                                'cs_quiz_taken' => $item['cs_quiz_taken'] ?? false,
+                                'cs_quiz_passed' => $item['cs_quiz_passed'] ?? false,
+                                'cs_quiz_paid' => $item['cs_quiz_paid'] ?? false,
+                                'cs_quiz_expiring' => $item['cs_quiz_expiring'],
+                                'cs_quiz_date' => $item['cs_quiz_date'],
+                                'cs_quiz_failed_attempts' => $item['cs_quiz_failed_attempts']
+                            ];
+                            $this->syncCouserInfo($data_couser);
+                        }
 
                         $sync_success[] = $item['cs_source_id'];
 

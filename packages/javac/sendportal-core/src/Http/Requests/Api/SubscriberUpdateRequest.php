@@ -44,7 +44,8 @@ class SubscriberUpdateRequest extends FormRequest
         $data['cs_quiz_taken'] = $data['cs_quiz_taken'] ?? false;
         $data['cs_quiz_passed'] = $data['cs_quiz_passed'] ?? false;
         $data['cs_quiz_paid'] = $data['cs_quiz_paid'] ?? false;
-        $data['sync_date'] = $data['sync_date'] ?? date("Y-m-d H:i:s");
+        // $data['sync_date'] = $data['sync_date'] ?? date("Y-m-d H:i:s");
+        $data['user_created_at'] = $data['user_created_at'] ?? date("Y-m-d H:i:s");
         return $data;
     }
 }
