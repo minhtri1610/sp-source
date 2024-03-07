@@ -14,6 +14,7 @@ use Sendportal\Base\Http\Requests\Api\SubscriberUpdateRequest;
 use Sendportal\Base\Http\Resources\Subscriber as SubscriberResource;
 use Sendportal\Base\Repositories\Subscribers\SubscriberTenantRepositoryInterface;
 use Sendportal\Base\Services\Subscribers\ApiSubscriberService;
+use Illuminate\Support\Facades\Log;
 
 class SubscribersController extends Controller
 {
@@ -140,9 +141,11 @@ class SubscribersController extends Controller
                         }
 
                         $sync_success[] = $item['cs_source_id'];
+                        Log::channel('apilog')->info("Sync Success Item: ".$item['cs_source_id']);
 
                     } catch (\Exception $ex) {
                         // dd($ex->getMessage());
+                        Log::channel('apilog')->error($ex->getMessage());
                         $sync_failed[] = $item['cs_source_id'];
                         continue;
                     }
@@ -156,6 +159,7 @@ class SubscribersController extends Controller
 
         } catch (\Exception $ex) {
             $errors = $ex->getMessage();
+            Log::channel('apilog')->error($errors);
             $res['msg'] = $errors;
             return $res;
         }
