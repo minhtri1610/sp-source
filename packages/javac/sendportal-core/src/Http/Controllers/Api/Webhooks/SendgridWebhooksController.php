@@ -22,6 +22,7 @@ class SendgridWebhooksController extends Controller
         }
 
         foreach ($payload as $event) {
+            Log::info($event);
             event(new SendgridWebhookReceived($event));
         }
 
