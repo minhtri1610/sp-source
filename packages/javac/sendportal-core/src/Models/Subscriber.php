@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
+use Sendportal\Base\Models\SubscriberCourse;
 
 /**
  * @property int $id
@@ -89,6 +90,12 @@ class Subscriber extends BaseModel
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class)
+            ->orderBy('id', 'desc');
+    }
+
+    public function courses(): HasMany
+    {
+        return $this->hasMany(SubscriberCourse::class)
             ->orderBy('id', 'desc');
     }
 

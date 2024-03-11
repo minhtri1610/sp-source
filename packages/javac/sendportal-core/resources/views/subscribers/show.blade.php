@@ -64,6 +64,63 @@
 
     <div class="card">
         <div class="card-header">
+            {{ __('Courses') }}
+        </div>
+
+        <div class="card-table">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{ __('Course name') }}</th>
+                    <th>{{ __('Quiz taken') }}</th>
+                    <th>{{ __('Quiz passed') }}</th>
+                    <th>{{ __('Quiz paid') }}</th>
+                    <th>{{ __('Quiz expiring') }}</th>
+                    <th>{{ __('Quiz date') }}</th>
+                    <th>{{ __('Quiz failed attempts') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($subscriber->messages as $message)
+                    <tr class="campaign-link">
+                        <td>
+                            {{ $message->sent_at ?? $message->created_at }}
+                        </td>
+                        <td>
+                            {{ $message->subject }}
+                        </td>
+                        <td>
+                            @if($message->isCampaign())
+                                <i class="fas fa-envelope color-gray-300"></i>
+                                <a href="{{ route('sendportal.campaigns.reports.index', $message->source_id) }}">
+                                    {{ $message->source->name }}
+                                </a>
+                            @elseif(\Sendportal\Base\Facades\Helper::isPro() && $message->isAutomation())
+                                <i class="fas fa-sync-alt color-gray-300"></i>
+                                <a href="{{ route('sendportal.automations.show', $message->source->automation_step->automation_id) }}">
+                                    {{ $message->source->automation_step->automation->name }}
+                                </a>
+                            @endif
+                        </td>
+                        <td>
+                            @include('sendportal::messages.partials.status-row')
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="100%">
+                            <p class="empty-table-text">{{ __('No Courses') }}</p>
+                        </td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <div class="card-header">
             {{ __('Messages') }}
         </div>
         <div class="card-table">
