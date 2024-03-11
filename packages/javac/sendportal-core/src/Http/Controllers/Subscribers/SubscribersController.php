@@ -91,9 +91,9 @@ class SubscribersController extends Controller
         $subscriber = $this->subscriberRepo->find(
             Sendportal::currentWorkspaceId(),
             $id,
-            ['tags', 'messages.source']
+            ['tags', 'messages.source', 'courses' ]
         );
-
+        dd($subscriber->messages);
         return view('sendportal::subscribers.show', compact('subscriber'));
     }
 
