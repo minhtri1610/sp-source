@@ -93,7 +93,6 @@ class SubscribersController extends Controller
             $id,
             ['tags', 'messages.source', 'courses' ]
         );
-        dd($subscriber->messages);
         return view('sendportal::subscribers.show', compact('subscriber'));
     }
 
