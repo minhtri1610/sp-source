@@ -99,19 +99,19 @@ class SubscribersController extends Controller
                 ]
             ];
             if(isset(request()->data) && !empty(request()->data)){
-                $data_syncs = request()->data;//json_decode(request()->data);
+                // $data_syncs = request()->data;//json_decode(request()->data);
+                $item = request()->data;
                 $workspaceId = request()->workspace_id;
                 $sync_success = [];
                 $sync_failed = [];
-                foreach ($data_syncs as $key => $item) {
-                    
+                // foreach ($data_syncs as $key => $item) {
+                if(!empty($item)){
                     try {
                         //check tags
                         // $tag = $this->insertTags($workspaceId, $item['cs_course_name']);
                         
                         //insert or ignore subscriber
                         $item = (array)$item;
-                        dd($item);
                         $item['cs_corporate_user'] = $item['cs_corporate_user'] ?? false;
                         if(!empty($item['user_created_at'])){
                             $item['created_at'] = date('Y-m-d H:i:s', strtotime($item['user_created_at']));
@@ -144,7 +144,7 @@ class SubscribersController extends Controller
                         dd($ex->getMessage());
                         Log::channel('apilog')->error($ex->getMessage());
                         $sync_failed[] = $item['cs_source_id'];
-                        continue;
+                        // continue;
                     }
 
                 }
