@@ -111,7 +111,7 @@ class SubscribersController extends Controller
                         
                         //insert or ignore subscriber
                         $item = (array)$item;
-
+                        dd($item);
                         $item['cs_corporate_user'] = $item['cs_corporate_user'] ?? false;
                         if(!empty($item['user_created_at'])){
                             $item['created_at'] = date('Y-m-d H:i:s', strtotime($item['user_created_at']));
