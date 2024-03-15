@@ -87,22 +87,22 @@
                             {{ $course->cs_course_name ?? $course->cs_course_name }}
                         </td>
                         <td class="text-center">
-                            {{ $course->quiz_taken ?? 0}}
+                            {{ $course->cs_quiz_paid ?? 0}}
                         </td>
                         <td class="text-center">
-                            {{ $course->quiz_passed ?? 0}}
+                            {{ $course->cs_quiz_passed ?? 0}}
                         </td>
                         <td class="text-center">
-                            {{ $course->quiz_paid ?? 0}}
+                            {{ $course->cs_quiz_paid ?? 0}}
                         </td>
                         <td class="text-center">
-                            {{ $course->quiz_expiring ?? 0}}
+                            {{ $course->cs_quiz_expiring ?? 0}}
                         </td>
                         <td class="text-center">
-                            {{ $course->quiz_date ?? '-'}}
+                            {{ $course->cs_quiz_date ?? '-'}}
                         </td>
                         <td class="text-center">
-                            {{ $course->quiz_failed_attempts ?? 0}}
+                            {{ $course->cs_quiz_failed_attempts ?? 0}}
                         </td>
                     </tr>
                 @empty

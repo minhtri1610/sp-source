@@ -23,6 +23,8 @@ class SubscriberCourse extends BaseModel
     /** @var string[] */
     protected $fillable = [
         'subscriber_id',
+        'code_course',
+        'sent_cheap_mail',
         'cs_course_name',
         'cs_quiz_taken',
         'cs_quiz_passed',

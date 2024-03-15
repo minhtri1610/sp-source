@@ -157,6 +157,6 @@ abstract class BaseSubscriberTenantRepository extends BaseTenantRepository imple
     }
 
     public function syncCourse($data){
-        return SubscriberCourse::create($data);
+        return SubscriberCourse::updateOrCreate(['subscriber_id' => $data['subscriber_id'], 'cs_course_name' => $data['cs_course_name']],$data);
     }
 }

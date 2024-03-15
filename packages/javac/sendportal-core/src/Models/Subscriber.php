@@ -65,7 +65,7 @@ class Subscriber extends BaseModel
         'cs_corporate_code',
         'cs_source_web',
         'cs_user_name',
-        'cs_customer_type',
+        'cs_customer_type',//'1' => 'Indiviual','2' => 'Corporate'
         'sync_date',
         'created_at'
         // 'cs_course_name',

@@ -117,34 +117,31 @@ class SubscribersController extends Controller
                             $item['created_at'] = date('Y-m-d H:i:s', strtotime($item['user_created_at']));
                         }
                         $item['sync_date'] = date('Y-m-d H:i:s');
-                        $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                        
                         //// save subscriber with tag
                         // $data_tag_w_subscriber = [
                         //     'tag_id' => $tag->id,
                         //     'subscriber_id' => $subscriber->id
                         // ];
                         // $this->syncSubscriberTagsApi($data_tag_w_subscriber);
+                        $data_courses = [
+                            'courses' => $item['courses'],
+                            'is_sent_cheap_mail' => $item['cheap_email_sent'],
+                        ];
 
+                        unset($item['courses']);
+                        unset($item['cheap_email_sent']);
+                        $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                        $data_courses['subscriber_id'] = $subscriber->id;
+
+                        $this->syncCouserInfo($data_courses);
                         // save info course for subscriber
-                        if(!$item['cheap_email_sent']){//check sent on cheapmail
-                            $data_couser = [
-                                'subscriber_id' => $subscriber->id,
-                                'cs_course_name' => $item['cs_course_name'] ?? 'no-name',
-                                'cs_quiz_taken' => $item['cs_quiz_taken'] ?? false,
-                                'cs_quiz_passed' => $item['cs_quiz_passed'] ?? false,
-                                'cs_quiz_paid' => $item['cs_quiz_paid'] ?? false,
-                                'cs_quiz_expiring' => $item['cs_quiz_expiring'],
-                                'cs_quiz_date' => $item['cs_quiz_date'],
-                                'cs_quiz_failed_attempts' => $item['cs_quiz_failed_attempts']
-                            ];
-                            $this->syncCouserInfo($data_couser);
-                        }
 
                         $sync_success[] = $item['cs_source_id'];
                         Log::channel('apilog')->info("Sync Success Item: ".$item['cs_source_id']);
 
                     } catch (\Exception $ex) {
-                        // dd($ex->getMessage());
+                        dd($ex->getMessage());
                         Log::channel('apilog')->error($ex->getMessage());
                         $sync_failed[] = $item['cs_source_id'];
                         continue;
@@ -176,8 +173,34 @@ class SubscribersController extends Controller
         return $existingSubscriber;
     }
 
-    private function syncCouserInfo($data){
-        return $this->subscribers->syncCourse($data);
+    private function handelCourseInfo($data_courses){
+        $res = [];
+        if(isset($data_courses["courses"]) && !empty($data_courses['courses'])){
+            foreach ($data_courses["courses"] as $key => $value) {
+                $item = [
+                    'sent_cheap_mail' => $data_courses['is_sent_cheap_mail'] ?? false,
+                    'subscriber_id' => $data_courses['subscriber_id'],
+                    'code_course' => @$value->code_course,
+                    'cs_course_name' => @$value->cs_course_name,
+                    'cs_quiz_taken' => @$value->cs_quiz_taken ?? 0,
+                    'cs_quiz_passed' => @$value->cs_quiz_passed ?? 0,
+                    'cs_quiz_paid' => @$value->cs_quiz_paid ?? 0,
+                    'cs_quiz_expiring' => @$value->cs_quiz_expiring ?? 0,
+                    'cs_quiz_date' => @$value->cs_quiz_date,
+                    'cs_quiz_failed_attempts' => @$value->cs_quiz_failed_attempts
+                ];
+                $res[] = $item;
+            }
+        }
+        return $res;
+    }
+
+    private function syncCouserInfo($raw_data){
+        $data = $this->handelCourseInfo($raw_data);
+        foreach ($data as $key => $value) {
+            $this->subscribers->syncCourse($value);
+        }
+        return true;
     }
 
     private function insertTags($workspaceId, $key){
