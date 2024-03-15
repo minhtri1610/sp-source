@@ -99,7 +99,7 @@ class SubscribersController extends Controller
                 ]
             ];
             if(isset(request()->data) && !empty(request()->data)){
-                $data_syncs = json_decode(request()->data);
+                $data_syncs = request()->data;//json_decode(request()->data);
                 $workspaceId = request()->workspace_id;
                 $sync_success = [];
                 $sync_failed = [];
