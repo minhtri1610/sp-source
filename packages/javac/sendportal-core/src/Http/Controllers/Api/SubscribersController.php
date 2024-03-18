@@ -123,18 +123,48 @@ class SubscribersController extends Controller
                         //     'subscriber_id' => $subscriber->id
                         // ];
                         // $this->syncSubscriberTagsApi($data_tag_w_subscriber);
-                        $data_courses = [
-                            'courses' => $item['courses'],
-                            'is_sent_cheap_mail' => $item['cheap_email_sent'],
-                        ];
-
-                        unset($item['courses']);
-                        unset($item['cheap_email_sent']);
-                        $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
-                        $data_courses['subscriber_id'] = $subscriber->id;
-
-                        $this->syncCouserInfo($data_courses);
+                        
+                        //handle info indiviual
+                        if($item['cs_customer_type'] == config('constants.customer_type_index')['indiviual']){
+                            $data_courses = [
+                                'courses' => $item['courses'],
+                                'is_sent_cheap_mail' => $item['cheap_email_sent'],
+                            ];
+    
+                            unset($item['courses']);
+                            unset($item['cheap_email_sent']);
+                            $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                            $data_courses['subscriber_id'] = $subscriber->id;
+    
+                            $this->syncCouserInfo($data_courses);
+                        }
                         // save info course for subscriber
+
+                        //handle info corporate
+                        if($item['cs_customer_type'] == config('constants.customer_type_index')['corporate']){
+                            unset($item['courses']);
+                            unset($item['cheap_email_sent']);
+
+                            $corp_data = [
+                                'subscriber_id' => '',
+                                'co_codes_used_percent' => $item['co_codes_used_percent'] ?? '',
+                                'co_code_string' => $item['co_code_string'] ?? '',
+                                'co_admin_name' => $item['co_admin_name'] ?? '',
+                                'co_admin_email' => $item['co_admin_email'] ?? '',
+                                'co_admin_phone' => $item['co_admin_phone'] ?? '',
+                                'co_category' => $item['co_category'] ?? '',
+                                'co_paid_codes_expired' => $item['co_paid_codes_expired'] ?? '',
+                                'co_paid_codes_not_expired' => $item['co_paid_codes_not_expired'] ?? '',
+                                'co_group_invoice_status' => $item['co_group_invoice_status'] ?? '',
+                                'co_invoice_created_not_paid_number' => $item['co_invoice_created_not_paid_number'] ?? '',
+                                'co_invoice_created_not_paid_amount' => $item['co_invoice_created_not_paid_amount'] ?? '',
+                                'co_invoice_created_not_paid_date' => $item['co_invoice_created_not_paid_date'] ?? null,       
+                                'group_codesexpire_datetime' => $item['group_codesexpire_datetime'] ?? ''
+                            ];
+                            $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                            $corp_data['subscriber_id'] = $subscriber->id;
+                            $this->subscribers->syncInfoCorporate($corp_data);
+                        }
 
                         $sync_success[] = $item['cs_source_id'];
                         Log::channel('apilog')->info("Sync Success Item: ".$item['cs_source_id']);

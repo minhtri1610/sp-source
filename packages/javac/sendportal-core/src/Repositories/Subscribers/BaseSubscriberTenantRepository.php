@@ -11,6 +11,7 @@ use Sendportal\Base\Models\Subscriber;
 use Sendportal\Base\Models\Tag;
 use Sendportal\Base\Models\SubscriberCourse;
 use Sendportal\Base\Repositories\BaseTenantRepository;
+use Sendportal\Base\Models\InfoCoporate;
 
 abstract class BaseSubscriberTenantRepository extends BaseTenantRepository implements SubscriberTenantRepositoryInterface
 {
@@ -158,5 +159,9 @@ abstract class BaseSubscriberTenantRepository extends BaseTenantRepository imple
 
     public function syncCourse($data){
         return SubscriberCourse::updateOrCreate(['subscriber_id' => $data['subscriber_id'], 'cs_course_name' => $data['cs_course_name']],$data);
+    }
+
+    public function syncInfoCorporate($data){
+        return InfoCoporate::updateOrCreate(['subscriber_id' => $data['subscriber_id'], 'co_code_string' => $data['co_code_string']], $data);
     }
 }

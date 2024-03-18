@@ -36,3 +36,5 @@ php artisan make:migration add_columns_from_sendportal_subscribers_table --table
 
 
 php artisan make:migration add_columns_from_course_of_subscribers_table --table=course_of_subscribers
+
+php artisan make:migration create_info_of_corporates_table

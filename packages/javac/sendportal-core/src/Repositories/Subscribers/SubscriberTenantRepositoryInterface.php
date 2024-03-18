@@ -24,5 +24,7 @@ interface SubscriberTenantRepositoryInterface extends BaseTenantInterface
     public function syncTagsApi(Subscriber $subscriber, array $data);
 
     public function syncCourse(array $data);
+
+    public function syncInfoCorporate(array $data);
     
 }

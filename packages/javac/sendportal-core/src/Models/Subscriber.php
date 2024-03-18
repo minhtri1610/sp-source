@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 use Sendportal\Base\Models\SubscriberCourse;
+use Sendportal\Base\Models\InfoCoporate;
 
 /**
  * @property int $id
