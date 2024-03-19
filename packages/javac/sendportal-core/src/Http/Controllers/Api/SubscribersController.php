@@ -170,7 +170,7 @@ class SubscribersController extends Controller
                         Log::channel('apilog')->info("Sync Success Item: ".$item['cs_source_id']);
 
                     } catch (\Exception $ex) {
-                        dd($ex->getMessage());
+                        // dd($ex->getMessage());
                         Log::channel('apilog')->error($ex->getMessage());
                         $sync_failed[] = $item['cs_source_id'];
                         continue;
