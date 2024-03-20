@@ -1,5 +1,6 @@
 ### rewrite by javac team
 ### add config to composer.json
+```javascript
 "repositories": [
     {
             "type": "path",
@@ -9,6 +10,7 @@
             }
     
     }],
+```
 
 ### add config to requied 
 "javac/sendportal-core": "*"
