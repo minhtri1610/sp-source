@@ -1,5 +1,9 @@
 @extends('sendportal::layouts.base')
 
+@push('css')
+    <link href="{{ asset('vendor/sendportal/css/cus-style.css') }}" rel="stylesheet">
+@endpush
+
 @section('htmlBody')
     <div class="container-fluid">
         <div class="row">

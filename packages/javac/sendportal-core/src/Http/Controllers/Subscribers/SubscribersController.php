@@ -19,7 +19,9 @@ use Sendportal\Base\Http\Requests\SubscriberRequest;
 use Sendportal\Base\Models\UnsubscribeEventType;
 use Sendportal\Base\Repositories\Subscribers\SubscriberTenantRepositoryInterface;
 use Sendportal\Base\Repositories\TagTenantRepository;
+use Sendportal\Base\Models\SettingAccount;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Auth;
 
 class SubscribersController extends Controller
 {
@@ -48,8 +50,34 @@ class SubscribersController extends Controller
             request()->all()
         )->withQueryString();
         $tags = $this->tagRepo->pluck(Sendportal::currentWorkspaceId(), 'name', 'id');
+        $columns = config('constants.subscriber_cols');
+        $columns_selected = $this->sortColumnName($this->getSetting(), $columns);
+        
+        return view('sendportal::subscribers.index', compact('subscribers', 'tags', 'columns', 'columns_selected'));
+    }
 
-        return view('sendportal::subscribers.index', compact('subscribers', 'tags'));
+    private function sortColumnName($columns_select, $columns){
+        $res = [];
+        foreach ($columns as $key => $value) {
+            if(in_array($key, $columns_select)){
+                $res[] = $key;
+            }
+        }
+        return $res;
+    }
+
+    private function getSetting() {
+        $columns = [];
+        $user_id = Auth::user()->id;
+        $workspace_id = Auth::user()->current_workspace_id;
+        $res = SettingAccount::where(['user_id' => $user_id, 'workspace_id' => $workspace_id])->first();
+
+        if(!empty($res) && isset($res->meta_table_subscriber)){
+            $columns = json_decode($res->meta_table_subscriber);
+            return array_keys((array)$columns);
+        }
+
+        return $columns;
     }
 
     /**

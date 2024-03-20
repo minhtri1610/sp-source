@@ -1,0 +1,60 @@
+.btn-fill-columns{
+    position: absolute;
+    z-index: 99;
+    right: 0;
+    top: 5px;
+}
+.sub-table{
+    position: relative;
+}
+
+.ul-wapper-menu {
+    list-style: none;
+    padding: 0;
+}
+.ul-wapper-menu li{
+    display: flex;
+    padding: 0px 15px;
+    font-size: 0.9rem;
+    border: 1px solid #dcdcdc;
+    margin: 5px;
+}
+.ul-wapper-menu li label{
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    width: 100%;
+    padding: 5px;
+}
+.ul-wapper-menu li label{
+
+}
+.ul-wapper-menu li input{
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}
+.cus-drop-menu{
+    min-width: 240px;
+}
+
+.wapper-btn-menu{
+    display: flex;
+    justify-content: flex-end;
+}
+.wapper-btn-menu button{
+    border: 1px solid #dcdcdc;
+    margin-right: 5px;
+}
+
+.wapper-btn-menu .btn-apply{
+    background: #5d63ff;
+    color: #fff;
+}
+.cus-drop-menu{
+    position: absolute;
+    transform: translate3d(-200px, 0px, 0px);
+    top: 40px;
+    left: 5px;
+    will-change: transform;
+}

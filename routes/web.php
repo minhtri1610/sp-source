@@ -33,6 +33,7 @@ Route::middleware('auth')->namespace('Auth')->group(
                 $profileRouter->get('/', 'ProfileController@show')->name('show');
                 $profileRouter->get('/edit', 'ProfileController@edit')->name('edit');
                 $profileRouter->put('/', 'ProfileController@update')->name('update');
+                $profileRouter->post('/setting', 'ProfileController@setting')->name('setting');
 
                 // Password
                 $profileRouter->name('password.')->prefix('password')->group(

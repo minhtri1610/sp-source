@@ -70,73 +70,206 @@
 
     <div class="card">
         <div class="card-table table-responsive">
-            <table class="table">
+
+            {{-- button fill-columns --}}
+            <div class="mr-2 btn-fill-columns">
+                <button class="btn btn-md btn-default" type="button" id="dropdownMenuClickableInside">
+                    <i class="fa fa-bars color-gray-400"></i>
+                </button>
+                <div class="dropdown-menu cus-drop-menu" aria-labelledby="dropdownMenuClickableInside">
+                    <form action="{{ route('profile.setting') }}" method="post">
+                        @csrf
+                        <ul class="ul-wapper-menu">
+                            <li>
+                                <label for="check-all">
+                                    @php
+                                        $check_all = count($columns) == count($columns_selected) ? 'checked' : '';
+                                    @endphp
+                                    <input id="check-all" type="checkbox" {{ $check_all }} name="check-all" value="all"> <span>All Fields</span>
+                                </label>
+                            </li>
+                            {{-- @dd($columns_selected) --}}
+                            @foreach ( $columns as $key => $value) 
+                                <li>
+                                    <label for="{{ $key }}">
+                                        <input @if(in_array($key, $columns_selected)) checked @endif id="{{ $key }}" type="checkbox" name="columns[]" value="{{ $key }}"> <span>{{ $value }}</span>
+                                    </label>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <div class="wapper-btn-menu">
+                            <button class="btn-menu btn-apply btn-md">Apply</button>
+                            <button type="button" class="btn-menu btn-close btn-md">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {{-- end button fill-columns --}}
+
+            <table class="table sub-table">
                 <thead>
-                <tr>
-                    <th>{{ __('Email') }}</th>
-                    <th>{{ __('Name') }}</th>
-                    {{-- fields new --}}
-                    <th>{{ __('Company Name') }}</th>
-                    <th>{{ __('Phone Number') }}</th>
-                    <th>{{ __('Customer Type') }}</th>
-                    {{-- <th>{{ __('Magic Link') }}</th> --}}
-                    {{-- end fields new --}}
-                    <th>{{ __('Tags') }}</th>
-                    <th>{{ __('Created') }}</th>
-                    <th>{{ __('Status') }}</th>
-                    <th>{{ __('Actions') }}</th>
-                </tr>
+                    @if(empty($columns_selected))
+                        <tr>
+                            <th>{{ __('Email') }}</th>
+                            <th>{{ __('Name') }}</th>
+                            {{-- fields new --}}
+                            <th>{{ __('Company Name') }}</th>
+                            <th>{{ __('Phone Number') }}</th>
+                            <th>{{ __('Customer Type') }}</th>
+                            {{-- <th>{{ __('Magic Link') }}</th> --}}
+                            {{-- end fields new --}}
+                            <th>{{ __('Tags') }}</th>
+                            <th>{{ __('Created') }}</th>
+                            <th>{{ __('Status') }}</th>
+                            <th>{{ __('Actions') }}</th>
+                        </tr>
+                    @else
+                        <tr>
+                            @foreach ($columns_selected as $val)
+                                <th>{{ $columns[$val] }}</th>
+                            @endforeach
+                            <th>{{ __('Actions') }}</th>
+                        </tr>
+                    @endif
                 </thead>
+
                 <tbody>
-                @forelse($subscribers as $subscriber)
-                    <tr>
-                        <td>
-                            <a href="{{ route('sendportal.subscribers.show', $subscriber->id) }}">
-                                {{ $subscriber->email }}
-                            </a>
-                        </td>
-                        <td>{{ $subscriber->full_name }}</td>
-                        <td>{{ $subscriber->cs_company_name }}</td>
-                        <td>{{ $subscriber->cs_phone_number }}</td>
-                        <td>{{ $subscriber->cs_customer_type ? config('constants.customer_type')[$subscriber->cs_customer_type] : '-' }}</td>
-                        {{-- <td>
-                            {{ $subscriber->cs_short_email ? 's-mail: '.$subscriber->cs_short_email.'-' : '' }} <br>
-                            {{ $subscriber->cs_short_sms ? 's-sms:'.$subscriber->cs_short_sms : ''}}
-                        </td> --}}
-                        <td>
-                            @forelse($subscriber->tags as $tag)
-                                <span class="badge badge-light">{{ $tag->name }}</span>
-                            @empty
-                                -
-                            @endforelse
-                        <td><span
-                                title="{{ $subscriber->created_at }}">{{ $subscriber->created_at->diffForHumans() }}</span>
-                        </td>
-                        <td>
-                            @if($subscriber->unsubscribed_at)
-                                <span class="badge badge-danger">{{ __('Unsubscribed') }}</span>
-                            @else
-                                <span class="badge badge-success">{{ __('Subscribed') }}</span>
-                            @endif
-                        </td>
-                        <td>
-                            <form action="{{ route('sendportal.subscribers.destroy', $subscriber->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <a href="{{ route('sendportal.subscribers.edit', $subscriber->id) }}"
-                                   class="btn btn-xs btn-light">{{ __('Edit') }}</a>
-                                <button type="submit"
-                                        class="btn btn-xs btn-light delete-subscriber">{{ __('Delete') }}</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="100%">
-                            <p class="empty-table-text">{{ __('No Subscribers Found') }}</p>
-                        </td>
-                    </tr>
-                @endforelse
+
+                    @forelse($subscribers as $subscriber)
+                        @if(empty($columns_selected))
+                            <tr>
+                                <td>
+                                    <a href="{{ route('sendportal.subscribers.show', $subscriber->id) }}">
+                                        {{ $subscriber->email }}
+                                    </a>
+                                </td>
+                                <td>{{ $subscriber->full_name }}</td>
+                                <td>{{ $subscriber->cs_company_name }}</td>
+                                <td>{{ $subscriber->cs_phone_number }}</td>
+                                <td>{{ $subscriber->cs_customer_type ? config('constants.customer_type')[$subscriber->cs_customer_type] : '-' }}</td>
+                                {{-- <td>
+                                    {{ $subscriber->cs_short_email ? 's-mail: '.$subscriber->cs_short_email.'-' : '' }} <br>
+                                    {{ $subscriber->cs_short_sms ? 's-sms:'.$subscriber->cs_short_sms : ''}}
+                                </td> --}}
+                                <td>
+                                    @forelse($subscriber->tags as $tag)
+                                        <span class="badge badge-light">{{ $tag->name }}</span>
+                                    @empty
+                                        -
+                                    @endforelse
+                                <td><span
+                                        title="{{ $subscriber->created_at }}">{{ $subscriber->created_at->diffForHumans() }}</span>
+                                </td>
+                                <td>
+                                    @if($subscriber->unsubscribed_at)
+                                        <span class="badge badge-danger">{{ __('Unsubscribed') }}</span>
+                                    @else
+                                        <span class="badge badge-success">{{ __('Subscribed') }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <form action="{{ route('sendportal.subscribers.destroy', $subscriber->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a href="{{ route('sendportal.subscribers.edit', $subscriber->id) }}"
+                                        class="btn btn-xs btn-light">{{ __('Edit') }}</a>
+                                        <button type="submit"
+                                                class="btn btn-xs btn-light delete-subscriber">{{ __('Delete') }}</button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        @else
+                            <tr>
+                                @foreach ($columns_selected as $val)
+                                    @switch($val)
+                                        @case('email')
+                                            <td>
+                                                <a href="{{ route('sendportal.subscribers.show', $subscriber->id) }}">
+                                                    {{ $subscriber->email }}
+                                                </a>
+                                            </td>
+                                        @break
+
+                                        @case('first_name')
+                                            <td>
+                                                {{ $subscriber->first_name }}
+                                            </td>
+                                        @break
+
+                                        @case('last_name')
+                                            <td>
+                                                {{ $subscriber->last_name }}
+                                            </td>
+                                        @break
+                                        
+                                        @case('company_name')
+                                            <td>
+                                                {{ $subscriber->company_name }}
+                                            </td>
+                                        @break
+
+                                        @case('phone_number')
+                                            <td>
+                                                {{ $subscriber->phone_number }}
+                                            </td>
+                                        @break
+
+                                        @case('customer_type')
+                                            <td>
+                                                {{ $subscriber->cs_customer_type ? config('constants.customer_type')[$subscriber->cs_customer_type] : '-' }}
+                                            </td>
+                                        @break
+
+                                        @case('tags')
+                                            <td>
+                                                @forelse($subscriber->tags as $tag)
+                                                    <span class="badge badge-light">{{ $tag->name }}</span>
+                                                @empty
+                                                    -
+                                                @endforelse
+                                            </td>
+                                        @break
+
+                                        @case('created')
+                                            <td>
+                                                <span title="{{ $subscriber->created_at }}">{{ $subscriber->created_at->diffForHumans() }}
+                                                </span>
+                                            </td>
+                                        @break
+
+                                        @case('status')
+                                            <td>
+                                                @if($subscriber->unsubscribed_at)
+                                                    <span class="badge badge-danger">{{ __('Unsubscribed') }}</span>
+                                                @else
+                                                    <span class="badge badge-success">{{ __('Subscribed') }}</span>
+                                                @endif
+                                            </td>
+                                        @break
+                                    @endswitch
+                                @endforeach
+                                
+                                <td>
+                                    <form action="{{ route('sendportal.subscribers.destroy', $subscriber->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a href="{{ route('sendportal.subscribers.edit', $subscriber->id) }}"
+                                        class="btn btn-xs btn-light">{{ __('Edit') }}</a>
+                                        <button type="submit"
+                                                class="btn btn-xs btn-light delete-subscriber">{{ __('Delete') }}</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endif
+                    @empty
+                        <tr>
+                            <td colspan="100%">
+                                <p class="empty-table-text">{{ __('No Subscribers Found') }}</p>
+                            </td>
+                        </tr>
+                    @endforelse
+
                 </tbody>
             </table>
         </div>
@@ -158,6 +291,7 @@
                 }
             });
         });
+
     </script>
 
 @endsection
@@ -168,4 +302,40 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script>
+    <script>
+        $('#dropdownMenuClickableInside').click(function () {
+            $('div[aria-labelledby="dropdownMenuClickableInside"]').toggle();
+        })
+        $('.btn-close').click(function () {
+            $('div[aria-labelledby="dropdownMenuClickableInside"]').hide();
+        })
+
+        $('#check-all').click(function () {
+            if($(this).is(":checked")){
+                $('input[type="checkbox"]').not(this).prop('checked', true);
+            } else{
+                $('input[type="checkbox"]').not(this).prop('checked', false);
+            }
+        })
+
+        $('.ul-wapper-menu input[type="checkbox"]').not('#check-all').click(function () {
+            let checkAll = checkedAllInput()
+            if(checkAll){
+                $('#check-all').prop('checked', true);
+            } else{
+                $('#check-all').prop('checked', false);
+            }
+        })
+
+        function checkedAllInput() {
+            let res = true;
+            $('.ul-wapper-menu input[type="checkbox"]').not('#check-all').each(function () {
+                if(!$(this).is(':checked')){ 
+                    res = false;
+                    return;
+                }
+            })
+            return res;
+        }
+    </script>
 @endpush
