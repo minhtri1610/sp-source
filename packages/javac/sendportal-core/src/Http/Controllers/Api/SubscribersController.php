@@ -156,8 +156,8 @@ class SubscribersController extends Controller
                                 'co_paid_codes_expired' => $info_corporate['co_paid_codes_expired'] ?? '',
                                 'co_paid_codes_not_expired' => $info_corporate['co_paid_codes_not_expired'] ?? '',
                                 'co_group_invoice_status' => $info_corporate['co_group_invoice_status'] ?? '',
-                                'co_invoice_created_not_paid_number' => $info_corporate['co_invoice_created_not_paid_number'] ?? null,
-                                'co_invoice_created_not_paid_amount' => $info_corporate['co_invoice_created_not_paid_amount'] ?? null,
+                                'co_invoice_created_not_paid_number' => $info_corporate['co_invoice_created_not_paid_number'] ?? 0,
+                                'co_invoice_created_not_paid_amount' => $info_corporate['co_invoice_created_not_paid_amount'] ?? 0,
                                 'co_invoice_created_not_paid_date' => $info_corporate['co_invoice_created_not_paid_date'] ?? null,       
                                 'group_codesexpire_datetime' => $info_corporate['group_codesexpire_datetime'] ?? null
                             ];
