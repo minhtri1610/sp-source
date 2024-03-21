@@ -162,6 +162,7 @@ abstract class BaseSubscriberTenantRepository extends BaseTenantRepository imple
     }
 
     public function syncInfoCorporate($data){
+        dd($data);
         return InfoCoporate::updateOrCreate(['subscriber_id' => $data['subscriber_id'], 'co_code_string' => $data['co_code_string']], $data);
     }
 }
