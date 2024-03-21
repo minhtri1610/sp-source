@@ -147,7 +147,7 @@ class SubscribersController extends Controller
                             $info_corporate = $item['info_corporates'];
                             $corp_data = [
                                 'subscriber_id' => '',
-                                'co_codes_used_percent' => $info_corporate['co_codes_used_percent'] ?? '',
+                                'co_codes_used_percent' => $info_corporate['co_codes_used_percent'] ?? null,
                                 'co_code_string' => $info_corporate['co_code_string'] ?? '',
                                 'co_admin_name' => $info_corporate['co_admin_name'] ?? '',
                                 'co_admin_email' => $info_corporate['co_admin_email'] ?? '',
@@ -156,10 +156,10 @@ class SubscribersController extends Controller
                                 'co_paid_codes_expired' => $info_corporate['co_paid_codes_expired'] ?? '',
                                 'co_paid_codes_not_expired' => $info_corporate['co_paid_codes_not_expired'] ?? '',
                                 'co_group_invoice_status' => $info_corporate['co_group_invoice_status'] ?? '',
-                                'co_invoice_created_not_paid_number' => $info_corporate['co_invoice_created_not_paid_number'] ?? '',
-                                'co_invoice_created_not_paid_amount' => $info_corporate['co_invoice_created_not_paid_amount'] ?? '',
+                                'co_invoice_created_not_paid_number' => $info_corporate['co_invoice_created_not_paid_number'] ?? null,
+                                'co_invoice_created_not_paid_amount' => $info_corporate['co_invoice_created_not_paid_amount'] ?? null,
                                 'co_invoice_created_not_paid_date' => $info_corporate['co_invoice_created_not_paid_date'] ?? null,       
-                                'group_codesexpire_datetime' => $info_corporate['group_codesexpire_datetime'] ?? ''
+                                'group_codesexpire_datetime' => $info_corporate['group_codesexpire_datetime'] ?? null
                             ];
                             unset($item['info_corporates']);
 
