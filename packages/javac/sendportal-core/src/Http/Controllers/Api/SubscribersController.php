@@ -147,7 +147,7 @@ class SubscribersController extends Controller
                             $info_corporate = $item['info_corporates'];
                             $corp_data = [
                                 'subscriber_id' => '',
-                                'co_codes_used_percent' => $info_corporate['co_codes_used_percent'] ?? null,
+                                'co_codes_used_percent' => $info_corporate['co_codes_used_percent'] ?? 0,
                                 'co_code_string' => $info_corporate['co_code_string'] ?? '',
                                 'co_admin_name' => $info_corporate['co_admin_name'] ?? '',
                                 'co_admin_email' => $info_corporate['co_admin_email'] ?? '',
