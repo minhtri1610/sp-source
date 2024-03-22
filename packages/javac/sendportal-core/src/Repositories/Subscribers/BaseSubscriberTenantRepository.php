@@ -164,4 +164,10 @@ abstract class BaseSubscriberTenantRepository extends BaseTenantRepository imple
     public function syncInfoCorporate($data){
         return InfoCoporate::updateOrCreate(['subscriber_id' => $data['subscriber_id'], 'co_code_string' => $data['co_code_string']], $data);
     }
+
+    public function getSourceWeb($workspaceId): Collection{
+
+        return Subscriber::select('cs_source_web')->where(['workspace_id' => $workspaceId])->whereNotNull('cs_source_web')->groupBy('cs_source_web')->get();
+    }
+    
 }

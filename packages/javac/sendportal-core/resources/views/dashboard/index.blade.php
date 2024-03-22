@@ -13,6 +13,29 @@
                 <div class="card-header card-header-accent">
                     <div class="card-header-inner">
                         {{ __('Total Subscribers') }}
+                        <div class="card-filter">
+                            <div class="item-filter filter-cus-type">
+                                <select name="cus_type" id="">
+                                    <option value="">All customer type</option>
+                                    @foreach (  $data_filler['customer_type'] as $key=>$value_c )
+                                        <option value="{{ $key }}" @if(@request('cus_type')==$key) selected @endif>{{ $value_c }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="item-filter filter-source-web">
+                                <select name="source" id="">
+                                    <option value="">All source web</option>
+                                    @foreach (  $data_filler['source_web'] as $value_s )
+                                        <option value="{{ $value_s->cs_source_web }}"  @if(@request('source') == $value_s->cs_source_web) selected @endif>{{ $value_s->cs_source_web }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="btn-calendar" id="datetimerange-input">
+                            <i class="far fa-calendar-alt"></i>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -170,6 +193,10 @@
 
 @endsection
 
+@push('css')
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/alumuko/vanilla-datetimerange-picker@latest/dist/vanilla-datetimerange-picker.css">
+@endpush
+
 @push('js')
     <script src="{{ asset('vendor/sendportal/js/Chart.bundle.min.js') }}"></script>
 
@@ -213,5 +240,107 @@
                 }
             });
         });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alumuko/vanilla-datetimerange-picker@latest/dist/vanilla-datetimerange-picker.js"></script>
+    <script>
+        var dashboard_url = "{{ route('sendportal.dashboard') }}";
+        var drp;
+        var rangeChange = function(){
+            drp.updateRanges({
+                'Last 3 Days': [moment().subtract(2, 'days').startOf('day'), moment().endOf('day')],
+                'This Year': [moment().startOf('year').startOf('day'), moment().endOf('year').endOf('day')],
+            });
+        };
+        window.addEventListener("load", function (event) {
+            drp = new DateRangePicker('datetimerange-input',
+                {
+                    //startDate: '2000-01-01',
+                    //endDate: '2000-01-03',
+                    //minDate: '2021-07-15 15:00',
+                    //maxDate: '2021-08-16 15:00',
+                    //maxSpan: { "days": 9 },
+                    showDropdowns: true,
+                    // minYear: 2020,
+                    maxYear: moment().year(),
+                    showWeekNumbers: true,
+                    //showISOWeekNumbers: true,
+                    // timePicker: true,
+                    //timePickerIncrement: 10,
+                    //timePicker24Hour: true,
+                    //timePickerSeconds: true,
+                    showCustomRangeLabel: true,
+                    alwaysShowCalendars: true,
+                    opens: 'center',
+                    //drops: 'up',
+                    singleDatePicker: false,
+                    //autoApply: true,
+                    //linkedCalendars: false,
+                    //isInvalidDate: function(m){
+                    //    return m.weekday() == 3;
+                    //},
+                    //isCustomDate: function(m){
+                    //    return "weekday-" + m.weekday();
+                    //},
+                    //autoUpdateInput: false,
+                    ranges: {
+                        'Today': [moment().startOf('day'), moment().endOf('day')],
+                        'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                        'This Week': [moment().startOf('week'), moment().endOf('week')],
+                        'Last Week': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                        'This Month': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+                        'Last Month' : [moment().subtract(1, 'months').startOf('month'), moment().subtract(1, 'months').endOf('month')],
+                        'This Year': [moment().startOf('year'), moment().endOf('year')],
+                        'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+                    },
+                    locale: {
+                        format: "YYYY-MM-DD",
+                    }
+                },
+                function (start, end) {
+                    // alert(start.format() + " - " + end.format());
+                })
+            //drp.setStartDate('2014/03/01');
+            //drp.setEndDate('2014/03/03');
+            window.addEventListener('apply.daterangepicker', function (ev) {
+                let params = [];
+                params['start'] = ev.detail.startDate.format('YYYY-MM-DD');
+                params['end'] = ev.detail.endDate.format('YYYY-MM-DD');
+                request_dashboard(params)
+                // console.log(ev.detail.startDate.format('YYYY-MM-DD'));
+                // console.log(ev.detail.endDate.format('YYYY-MM-DD'));
+            });
+        });
+
+        $('select[name="cus_type"]').change(function () {
+            let url_current = dashboard_url
+            if (url_current.indexOf('?') !== -1) {
+                window.location.href = url_current + '&cus_type=' + $(this).val()
+            } else{
+                window.location.href = url_current + '?cus_type=' + $(this).val()
+            }
+        })
+
+        $('select[name="source_web"]').change(function () {
+            let url_current = dashboard_url
+            if (url_current.indexOf('?') !== -1) {
+                window.location.href = url_current + '&source=' + $(this).val()
+            } else{
+                window.location.href = url_current + '?source=' + $(this).val()
+            }
+        })
+
+
+        function request_dashboard(params) {
+            let dashboard_search = dashboard_url;
+            if(params['start']){
+                dashboard_search += '?start=' + params['start'];
+            }
+            if(params['end']){
+                dashboard_search += '&end=' + params['end'];
+            }
+            window.location.href = dashboard_search;
+        }
     </script>
 @endpush

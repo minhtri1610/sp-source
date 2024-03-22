@@ -10,6 +10,7 @@ use Sendportal\Base\Repositories\Campaigns\CampaignTenantRepositoryInterface;
 use Sendportal\Base\Repositories\Messages\MessageTenantRepositoryInterface;
 use Sendportal\Base\Repositories\Subscribers\SubscriberTenantRepositoryInterface;
 use Sendportal\Base\Services\Campaigns\CampaignStatisticsService;
+use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
@@ -46,9 +47,15 @@ class DashboardController extends Controller
      */
     public function index(): View
     {
+        $params = request()->all();
+        // dd($params);
         $workspaceId = Sendportal::currentWorkspaceId();
         $completedCampaigns = $this->campaigns->completedCampaigns($workspaceId, ['status']);
-        $subscriberGrowthChart = $this->getSubscriberGrowthChart($workspaceId);
+        $subscriberGrowthChart = $this->getSubscriberGrowthChart($workspaceId, $params);
+        $data_filler = [
+            'customer_type' => config('constants.customer_type'),
+            'source_web' => $this->getAllSourceWeb($workspaceId)
+        ];
 
         return view('sendportal::dashboard.index', [
             'recentSubscribers' => $this->subscribers->getRecentSubscribers($workspaceId),
@@ -56,14 +63,29 @@ class DashboardController extends Controller
             'campaignStats' => $this->campaignStatisticsService->getForCollection($completedCampaigns, $workspaceId),
             'subscriberGrowthChartLabels' => json_encode($subscriberGrowthChart['labels']),
             'subscriberGrowthChartData' => json_encode($subscriberGrowthChart['data']),
+            'data_filler' => $data_filler
         ]);
     }
+    
 
-    protected function getSubscriberGrowthChart($workspaceId): array
+    protected function getAllSourceWeb($workspaceId)
     {
-        $period = CarbonPeriod::create(now()->subDays(30)->startOfDay(), now()->endOfDay());
+        $data_sources =  $this->subscribers->getSourceWeb($workspaceId);
+        return $data_sources;
+    }
 
-        $growthChartData = $this->subscribers->getGrowthChartData($period, $workspaceId);
+    protected function getSubscriberGrowthChart($workspaceId, $params): array
+    {
+        if(isset($params['start']) && isset($params['end'])){
+            $start_date = Carbon::createFromFormat('Y-m-d', $params['start']);
+            $end_date = Carbon::createFromFormat('Y-m-d', $params['end']);
+            $period = CarbonPeriod::create($start_date, $end_date);
+        } else{
+            $period = CarbonPeriod::create(now()->subDays(30)->startOfDay(), now()->endOfDay());
+        }
+        // dd($period->getEndDate());
+
+        $growthChartData = $this->subscribers->getGrowthChartData($period, $workspaceId, $params);
 
         $growthChart = [
             'labels' => [],

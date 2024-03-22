@@ -58,3 +58,47 @@
     left: 5px;
     will-change: transform;
 }
+
+/* css dashboard */
+.card-header-inner{
+    position: relative;
+}
+
+#datetimerange-input{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.daterangepicker.openscenter:after{
+    left: unset;
+    right: 23px;
+}
+.daterangepicker.openscenter:before{
+    left: unset;
+    right: 23px;
+}
+.daterangepicker {
+    right: 35px!important;
+}
+
+/* css dashboard */
+.card-filter{
+    position: absolute;
+    width: 26%;
+    right: 20px;
+    display: inline-flex;
+    top: -3px;
+}
+
+.item-filter{
+    width: 48%;
+    margin-right: 2%;
+}
+
+.item-filter select{
+    width: 100%;
+    font-size: small;
+    border: 1px solid #dcdcdc;
+    outline: none;
+}
+

@@ -17,7 +17,7 @@ interface SubscriberTenantRepositoryInterface extends BaseTenantInterface
 
     public function getRecentSubscribers(int $workspaceId): Collection;
 
-    public function getGrowthChartData(CarbonPeriod $period, int $workspaceId): array;
+    public function getGrowthChartData(CarbonPeriod $period, int $workspaceId, array $params = []): array;
 
     public function insertOrIgnoreTags(int $workspaceId, string $key_name);
 
@@ -26,5 +26,7 @@ interface SubscriberTenantRepositoryInterface extends BaseTenantInterface
     public function syncCourse(array $data);
 
     public function syncInfoCorporate(array $data);
+
+    public function getSourceWeb(int $workspaceId):Collection;
     
 }
