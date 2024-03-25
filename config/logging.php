@@ -103,6 +103,11 @@ return [
             'driver' => 'daily',
             'level' => 'info',
             'path' => storage_path('logs/api/api_log.log'),
+        ],
+        'deploy' => [
+            'driver' => 'single',
+            'level' => 'info',
+            'path' => storage_path('logs/deploy_log.log'),
         ]
     ],
 

@@ -17,6 +17,7 @@ Auth::routes(
 );
 
 Route::get('setup', 'SetupController@index')->name('setup');
+Route::get('deploy', 'DeployController@index')->name('deploy');
 
 // Auth.
 Route::middleware('auth')->namespace('Auth')->group(
