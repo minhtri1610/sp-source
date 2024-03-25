@@ -24,13 +24,15 @@ class DeployController extends Controller
         try {
 
             $deploymentDir = env('ROOT_DIR', '/var/www/html/send-portal');
-            $pre_set = new Process(["git config --global --add safe.directory "], $deploymentDir);
+            $pre_set = new Process(["sudo git config --global --add safe.directory "], $deploymentDir);
             $pre_set->run();
 
-            $process = Process::fromShellCommandline("cd $deploymentDir && git pull origin stagging");
+            $process = Process::fromShellCommandline("cd $deploymentDir && sudo git pull origin stagging");
             $process->run();
             // Run additional deployment tasks as needed
             Artisan::call('migrate');
+            Artisan::call('vendor:publish --provider=Sendportal\\Base\\SendportalBaseServiceProvider --force');
+            
             if (!$process->isSuccessful()) {
                 throw new ProcessFailedException($process);
             }
