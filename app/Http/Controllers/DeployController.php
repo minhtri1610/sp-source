@@ -38,6 +38,8 @@ class DeployController extends Controller
                 }
                 Log::channel('deploy')->info('Deployment output success');
                 return response()->json(['message' => 'Deployment successful'], 200);
+            } else{
+                Log::channel('deploy')->info('Deployment none token');
             }
 
         } catch (ProcessFailedException $ex) {
