@@ -322,7 +322,7 @@
             }
         })
 
-        $('select[name="source_web"]').change(function () {
+        $('select[name="source"]').change(function () {
             let url_current = dashboard_url
             if (url_current.indexOf('?') !== -1) {
                 window.location.href = url_current + '&source=' + $(this).val()
