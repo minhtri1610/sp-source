@@ -31,10 +31,7 @@ class DeployController extends Controller
             if (!$process->isSuccessful()) {
                 throw new ProcessFailedException($process);
             }
-
-            // if ($process->isSuccessful()) {
-            //     Log::channel('deploy')->info('Deployment output success');
-            // }
+            Log::channel('deploy')->info('Deployment output success');
             return response()->json(['message' => 'Deployment successful'], 200);
 
         } catch (ProcessFailedException $ex) {
