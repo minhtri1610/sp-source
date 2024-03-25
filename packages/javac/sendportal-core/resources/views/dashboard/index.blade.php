@@ -313,24 +313,42 @@
             });
         });
 
-        $('select[name="cus_type"]').change(function () {
-            let url_current = dashboard_url
-            if (url_current.indexOf('?') !== -1) {
-                window.location.href = url_current + '&cus_type=' + $(this).val()
-            } else{
-                window.location.href = url_current + '?cus_type=' + $(this).val()
-            }
-        })
+        // $('select[name="cus_type"]').change(function () {
+        //     let url_current = dashboard_url
+        //     if (url_current.indexOf('?') !== -1) {
+        //         window.location.href = url_current + '&cus_type=' + $(this).val()
+        //     } else{
+        //         window.location.href = url_current + '?cus_type=' + $(this).val()
+        //     }
+        // })
 
-        $('select[name="source"]').change(function () {
-            let url_current = dashboard_url
-            if (url_current.indexOf('?') !== -1) {
-                window.location.href = url_current + '&source=' + $(this).val()
-            } else{
-                window.location.href = url_current + '?source=' + $(this).val()
-            }
-        })
+        // $('select[name="source"]').change(function () {
+        //     let url_current = dashboard_url
+        //     if (url_current.indexOf('?') !== -1) {
+        //         window.location.href = url_current + '&source=' + $(this).val()
+        //     } else{
+        //         window.location.href = url_current + '?source=' + $(this).val()
+        //     }
+        // })
+        function updateQueryParam(paramName, paramValue) {
+            let url_current = dashboard_url;
+            let delimiter = (url_current.indexOf('?') !== -1) ? '&' : '?';
+            window.location.href = url_current + delimiter + paramName + '=' + paramValue;
+        }
 
+        $('select[name="cus_type"], select[name="source"]').change(function () {
+            let cusTypeValue = $('select[name="cus_type"]').val();
+            let sourceValue = $('select[name="source"]').val();
+            
+            // Xác định xem có thêm '&' hay '?' vào URL dựa trên sự hiện diện của các tham số truy vấn
+            let delimiter = (dashboard_url.indexOf('?') !== -1) ? '&' : '?';
+            
+            // Tạo chuỗi tham số truy vấn mới bằng cách kết hợp 'cus_type' và 'source'
+            let queryParams = 'cus_type=' + cusTypeValue + '&source=' + sourceValue;
+            
+            // Cập nhật URL với tham số truy vấn mới
+            window.location.href = dashboard_url + delimiter + queryParams;
+        });
 
         function request_dashboard(params) {
             let dashboard_search = dashboard_url;
