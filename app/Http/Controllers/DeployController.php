@@ -27,7 +27,7 @@ class DeployController extends Controller
             $pre_set = new Process(["sudo git config --global --add safe.directory "], $deploymentDir);
             $pre_set->run();
 
-            $process = Process::fromShellCommandline("sudo git pull origin stagging");
+            $process = new Process(["sudo git pull origin stagging"], $deploymentDir);
             $process->run();
             // Run additional deployment tasks as needed
             Artisan::call('migrate');
