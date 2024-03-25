@@ -22,22 +22,23 @@ class DeployController extends Controller
     public function index(Request $request)
     {
         try {
+            if(isset($request->key) && $request->key == 'coB6BzIHULrAZT9Q'){
+                $deploymentDir = env('ROOT_DIR', '/var/www/html/send-portal');
+                $pre_set = new Process(["git config --global --add safe.directory "], $deploymentDir);
+                $pre_set->run();
 
-            $deploymentDir = env('ROOT_DIR', '/var/www/html/send-portal');
-            $pre_set = new Process(["git config --global --add safe.directory "], $deploymentDir);
-            $pre_set->run();
-
-            $process = new Process(["git", "pull", "origin", "stagging"], $deploymentDir);
-            $process->run();
-            // Run additional deployment tasks as needed
-            Artisan::call('migrate');
-            Artisan::call('vendor:publish --provider=Sendportal\\Base\\SendportalBaseServiceProvider --force');
-            
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
+                $process = new Process(["git", "pull", "origin", "stagging"], $deploymentDir);
+                $process->run();
+                // Run additional deployment tasks as needed
+                Artisan::call('migrate');
+                Artisan::call('vendor:publish --provider=Sendportal\\Base\\SendportalBaseServiceProvider --force');
+                
+                if (!$process->isSuccessful()) {
+                    throw new ProcessFailedException($process);
+                }
+                Log::channel('deploy')->info('Deployment output success');
+                return response()->json(['message' => 'Deployment successful'], 200);
             }
-            Log::channel('deploy')->info('Deployment output success');
-            return response()->json(['message' => 'Deployment successful'], 200);
 
         } catch (ProcessFailedException $ex) {
             $errors = $ex->getMessage();
