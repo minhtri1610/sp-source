@@ -28,9 +28,13 @@ class DeployController extends Controller
             $process->run();
             // Run additional deployment tasks as needed
             Artisan::call('migrate');
-            if ($process->isSuccessful()) {
-                Log::channel('deploy')->info('Deployment output success');
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
             }
+
+            // if ($process->isSuccessful()) {
+            //     Log::channel('deploy')->info('Deployment output success');
+            // }
             return response()->json(['message' => 'Deployment successful'], 200);
 
         } catch (ProcessFailedException $ex) {
