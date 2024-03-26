@@ -118,4 +118,9 @@ Route::middleware(['auth', 'verified', RequireWorkspace::class])->group(
     }
 );
 
+
+use App\Http\Controllers\EmailController;
+Route::get('send-email-queue', [EmailController::class, 'sendEmailQueue']);
+
+
 Sendportal::publicWebRoutes();
