@@ -247,13 +247,15 @@
     <script>
         var dashboard_url = "{{ route('sendportal.dashboard') }}";
         var drp;
+        var start_date = "{{ @request('start') }}";
+        var end_date = "{{ @request('end') }}";
         var rangeChange = function(){
             drp.updateRanges({
                 'Last 3 Days': [moment().subtract(2, 'days').startOf('day'), moment().endOf('day')],
                 'This Year': [moment().startOf('year').startOf('day'), moment().endOf('year').endOf('day')],
             });
         };
-        window.addEventListener("load", function (event) {
+        // window.addEventListener("load", function (event) {
             drp = new DateRangePicker('datetimerange-input',
                 {
                     //startDate: '2000-01-01',
@@ -306,59 +308,43 @@
             window.addEventListener('apply.daterangepicker', function (ev) {
                 let params = [];
                 params['start'] = ev.detail.startDate.format('YYYY-MM-DD');
+                start_date = params['start'];
                 params['end'] = ev.detail.endDate.format('YYYY-MM-DD');
+                end_date = params['end'];
+                params['cus_type'] = $('select[name="cus_type"]').val();
+                params['source'] = $('select[name="source"]').val();
                 request_dashboard(params)
-                // console.log(ev.detail.startDate.format('YYYY-MM-DD'));
-                // console.log(ev.detail.endDate.format('YYYY-MM-DD'));
             });
-        });
+        // });
 
-        // $('select[name="cus_type"]').change(function () {
-        //     let url_current = dashboard_url
-        //     if (url_current.indexOf('?') !== -1) {
-        //         window.location.href = url_current + '&cus_type=' + $(this).val()
-        //     } else{
-        //         window.location.href = url_current + '?cus_type=' + $(this).val()
-        //     }
-        // })
-
-        // $('select[name="source"]').change(function () {
-        //     let url_current = dashboard_url
-        //     if (url_current.indexOf('?') !== -1) {
-        //         window.location.href = url_current + '&source=' + $(this).val()
-        //     } else{
-        //         window.location.href = url_current + '?source=' + $(this).val()
-        //     }
-        // })
-        function updateQueryParam(paramName, paramValue) {
-            let url_current = dashboard_url;
-            let delimiter = (url_current.indexOf('?') !== -1) ? '&' : '?';
-            window.location.href = url_current + delimiter + paramName + '=' + paramValue;
+        if(start_date != '' && end_date != ''){
+            drp.setStartDate(start_date)
+            drp.setEndDate(end_date)
+        } else{
+            drp.setStartDate(moment().startOf('month').startOf('day'))
+            drp.setEndDate(moment().endOf('month').endOf('day'))
         }
+
 
         $('select[name="cus_type"], select[name="source"]').change(function () {
             let cusTypeValue = $('select[name="cus_type"]').val();
             let sourceValue = $('select[name="source"]').val();
-            
-            // Xác định xem có thêm '&' hay '?' vào URL dựa trên sự hiện diện của các tham số truy vấn
             let delimiter = (dashboard_url.indexOf('?') !== -1) ? '&' : '?';
-            
-            // Tạo chuỗi tham số truy vấn mới bằng cách kết hợp 'cus_type' và 'source'
-            let queryParams = 'cus_type=' + cusTypeValue + '&source=' + sourceValue;
-            
-            // Cập nhật URL với tham số truy vấn mới
+            if(drp){
+                start_date = drp.startDate.format('YYYY-MM-DD');
+                end_date = drp.endDate.format('YYYY-MM-DD');
+            }
+            let queryParams = 'cus_type=' + cusTypeValue + '&source=' + sourceValue + '&start=' + start_date + '&end=' + end_date;
+
             window.location.href = dashboard_url + delimiter + queryParams;
         });
 
         function request_dashboard(params) {
-            let dashboard_search = dashboard_url;
-            if(params['start']){
-                dashboard_search += '?start=' + params['start'];
-            }
-            if(params['end']){
-                dashboard_search += '&end=' + params['end'];
-            }
-            window.location.href = dashboard_search;
+            let delimiter = (dashboard_url.indexOf('?') !== -1) ? '&' : '?';
+            let queryParams = 'cus_type=' + params['cus_type'] + '&source=' + params['source'] + '&start=' + params['start'] + '&end=' + params['end'];
+
+            window.location.href = dashboard_url + delimiter + queryParams;
+
         }
     </script>
 @endpush

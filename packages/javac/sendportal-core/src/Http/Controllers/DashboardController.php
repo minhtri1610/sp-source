@@ -76,7 +76,7 @@ class DashboardController extends Controller
 
     protected function getSubscriberGrowthChart($workspaceId, $params): array
     {
-        if(isset($params['start']) && isset($params['end'])){
+        if(isset($params['start']) && isset($params['end']) && !empty($params['start']) && !empty($params['end'])){
             $start_date = Carbon::createFromFormat('Y-m-d', $params['start']);
             $end_date = Carbon::createFromFormat('Y-m-d', $params['end']);
             $period = CarbonPeriod::create($start_date, $end_date);
