@@ -321,8 +321,8 @@
             drp.setStartDate(start_date)
             drp.setEndDate(end_date)
         } else{
-            drp.setStartDate(moment().startOf('month').startOf('day'))
-            drp.setEndDate(moment().endOf('month').endOf('day'))
+            drp.setStartDate(moment().subtract(30, 'days'))
+            drp.setEndDate(moment())
         }
 
 
