@@ -239,4 +239,113 @@ class SubscribersController extends Controller
             return $this->subscribers->insertOrIgnoreTags($workspaceId, $key);
         }
     }
+
+    public function syncDataV2(){
+        try {
+            $res = [
+                'msg' => '',
+                'data' => [
+                    'sync_success' => [],
+                    'sync_failed' => []
+                ]
+            ];
+            if(isset(request()->data) && !empty(request()->data)){
+                $encodedData = gzencode(base64_decode(request()->data));
+                $decodedData = gzdecode($encodedData);
+                $data = json_decode($decodedData, true);
+                dd($data);
+
+                // $data_syncs = request()->data;//json_decode(request()->data);
+                // $workspaceId = request()->workspace_id;
+                // $sync_success = [];
+                // $sync_failed = [];
+                // foreach ($data_syncs as $key => $item) {
+                    
+                //     try {
+                //         //check tags
+                //         // $tag = $this->insertTags($workspaceId, $item['cs_course_name']);
+                        
+                //         //insert or ignore subscriber
+                //         // $item = (array)$item;
+                //         $item['cs_corporate_user'] = $item['cs_corporate_user'] ?? false;
+                //         if(!empty($item['user_created_at'])){
+                //             $item['created_at'] = date('Y-m-d H:i:s', strtotime($item['user_created_at']));
+                //         }
+                //         $item['sync_date'] = date('Y-m-d H:i:s');
+                        
+                //         //// save subscriber with tag
+                //         // $data_tag_w_subscriber = [
+                //         //     'tag_id' => $tag->id,
+                //         //     'subscriber_id' => $subscriber->id
+                //         // ];
+                //         // $this->syncSubscriberTagsApi($data_tag_w_subscriber);
+                        
+                //         //handle info indiviual
+                //         if($item['cs_customer_type'] == config('constants.customer_type_index')['indiviual']){
+                //             $data_courses = [
+                //                 'courses' => $item['courses'],
+                //                 'is_sent_cheap_mail' => $item['cheap_email_sent'],
+                //             ];
+    
+                //             unset($item['courses']);
+                //             unset($item['cheap_email_sent']);
+                //             $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                //             $data_courses['subscriber_id'] = $subscriber->id;
+    
+                //             $this->syncCouserInfo($data_courses);
+                //         }
+                //         // save info course for subscriber
+
+                //         //handle info corporate
+                //         if($item['cs_customer_type'] == config('constants.customer_type_index')['corporate']){
+                //             // unset($item['courses']);
+                //             // unset($item['cheap_email_sent']);
+                //             $info_corporate = $item['info_corporates'];
+                //             $corp_data = [
+                //                 'subscriber_id' => '',
+                //                 'co_codes_used_percent' => $info_corporate['co_codes_used_percent'] ?? 0,
+                //                 'co_code_string' => $info_corporate['co_code_string'] ?? '',
+                //                 'co_admin_name' => $info_corporate['co_admin_name'] ?? '',
+                //                 'co_admin_email' => $info_corporate['co_admin_email'] ?? '',
+                //                 'co_admin_phone' => $info_corporate['co_admin_phone'] ?? '',
+                //                 'co_category' => $info_corporate['co_category'] ?? '',
+                //                 'co_paid_codes_expired' => $info_corporate['co_paid_codes_expired'] ?? '',
+                //                 'co_paid_codes_not_expired' => $info_corporate['co_paid_codes_not_expired'] ?? '',
+                //                 'co_group_invoice_status' => $info_corporate['co_group_invoice_status'] ?? '',
+                //                 'co_invoice_created_not_paid_number' => $info_corporate['co_invoice_created_not_paid_number'] ?? 0,
+                //                 'co_invoice_created_not_paid_amount' => $info_corporate['co_invoice_created_not_paid_amount'] ?? 0,
+                //                 'co_invoice_created_not_paid_date' => $info_corporate['co_invoice_created_not_paid_date'] ?? null,       
+                //                 'group_codesexpire_datetime' => $info_corporate['group_codesexpire_datetime'] ?? null
+                //             ];
+                //             unset($item['info_corporates']);
+
+                //             $subscriber = $this->insertOrIgnoreSubscribers($workspaceId, $item);
+                //             $corp_data['subscriber_id'] = $subscriber->id;
+                //             $this->subscribers->syncInfoCorporate($corp_data);
+                //         }
+
+                //         $sync_success[] = $item['cs_source_id'];
+                //         Log::channel('apilog')->info("Sync Success Item: ".$item['cs_source_id']);
+
+                //     } catch (\Exception $ex) {
+                //         // dd($ex->getMessage());
+                //         Log::channel('apilog')->error($ex->getMessage());
+                //         $sync_failed[] = $item['cs_source_id'];
+                //         continue;
+                //     }
+
+                // }
+                // $res['msg'] = 'Completed Sync Data';
+                // $res['data']['sync_success'] = $sync_success;
+                // $res['data']['sync_failed'] = $sync_failed;
+            }
+            return $res;
+
+        } catch (\Exception $ex) {
+            $errors = $ex->getMessage();
+            Log::channel('apilog')->error($errors);
+            $res['msg'] = $errors;
+            return $res;
+        }
+    }
 }

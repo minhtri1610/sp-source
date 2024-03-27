@@ -17,6 +17,7 @@ class ApiRoutes
                 $apiRouter->post('send-email', 'CampaignDispatchController@sendEmail')->name('campaigns.sendemail');
 
                 $apiRouter->post('sync-subscribers', 'SubscribersController@syncData')->name('subscribers.sync');
+                $apiRouter->post('sync-subscribers-v2', 'SubscribersController@syncDataV2')->name('subscribers.sync-v2');
                 $apiRouter->apiResource('subscribers', 'SubscribersController');
                 
                 $apiRouter->apiResource('tags', 'TagsController');
